@@ -7,6 +7,19 @@ const PROMO_CODES = {
   "BEAUTY20": 0.20
 };
 
+// Функция живых лепестков на фоне
+function createPetal() {
+  const petal = document.createElement('div');
+  petal.classList.add('petal');
+  petal.innerText = '🌸';
+  petal.style.left = Math.random() * 100 + 'vw';
+  petal.style.animationDuration = Math.random() * 3 + 4 + 's';
+  petal.style.opacity = Math.random() * 0.5 + 0.3;
+  document.body.appendChild(petal);
+  setTimeout(() => { petal.remove(); }, 6000);
+}
+setInterval(createPetal, 4000);
+
 function toggleCart() {
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.toggle('active');
@@ -19,6 +32,7 @@ function addToCart(name, price) {
   if (sidebar) sidebar.classList.add('active');
 }
 
+// Удаление товара из корзины
 function removeFromCart(index) {
   cart.splice(index, 1);
   updateCart();
