@@ -8,7 +8,6 @@
 </head>
 <body>
 
-  <!-- ШАПКА -->
   <header class="navbar">
     <div class="logo">AURA</div>
     <nav class="nav-links">
@@ -18,38 +17,31 @@
       <a href="#faq">FAQ</a>
       <a href="#feedback">Контакты</a>
     </nav>
-    <div class="cart-icon" id="cartIconBtn">
+    <div class="cart-icon" onclick="toggleCart()">
       🛒 <span class="cart-count">0</span>
     </div>
   </header>
 
-  <!-- БОКОВАЯ КОРЗИНА -->
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h3>Ваша корзина</h3>
-      <span class="close-cart" id="closeCartBtn">&times;</span>
+      <span class="close-cart" onclick="toggleCart()">&times;</span>
     </div>
     <div class="cart-body" id="cartBody">
       <p class="empty-cart-msg">Корзина пока пуста</p>
     </div>
     <div class="cart-footer">
-      <!-- ПРОМОКОД -->
-      <div class="promo-box">
-        <input type="text" id="promoInput" placeholder="Введите промокод">
-        <button id="applyPromoBtn">Применить</button>
-      </div>
       <div class="total-price">Итого: <span id="cartTotal">0</span> ₽</div>
-      <button class="btn-checkout" id="openOrderModalBtn">Оформить заказ</button>
+      <button class="btn-checkout" onclick="openOrderModal()">Оформить заказ</button>
     </div>
   </div>
 
-  <!-- АНКЕТА ОФОРМЛЕНИЯ ЗАКАЗА -->
   <div class="modal-overlay" id="orderModal">
     <div class="order-modal-box">
-      <span class="close-modal" id="closeModalBtn">&times;</span>
+      <span class="close-modal" onclick="closeOrderModal()">&times;</span>
       <h3>Оформление заказа в AURA</h3>
       <p class="modal-subtitle">Заполните данные для доставки бьюти-бокса</p>
-      <form id="checkoutForm">
+      <form id="checkoutForm" onsubmit="submitOrder(event)">
         <div class="form-group">
           <label>Контакты</label>
           <input type="text" placeholder="Имя и Фамилия" required>
@@ -61,7 +53,7 @@
         </div>
         <div class="form-group">
           <label>Доставка</label>
-          <select>
+          <select id="shippingMethod">
             <option value="cdek">Курьер СДЭК (до двери)</option>
             <option value="post">Почта России</option>
             <option value="pickup">Шоурум AURA</option>
@@ -69,20 +61,27 @@
         </div>
         <div class="form-group">
           <label>Оплата</label>
-          <select>
+          <select id="paymentMethod">
             <option value="card">Картой онлайн</option>
             <option value="sbp">СБП</option>
             <option value="cash">При получении</option>
           </select>
         </div>
-        <div class="order-summary-box">Сумма: <strong id="modalTotalPrice">0</strong> ₽</div>
+        <div class="form-group">
+          <label>Промокод (Попробуй: AURA10)</label>
+          <div style="display:flex; gap:10px;">
+            <input type="text" id="promoInput" placeholder="Введите код" style="margin-bottom:0; flex-grow:1;">
+            <button type="button" onclick="applyPromoCode()" style="background:#333; color:white; border:none; padding:0 15px; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif;">Применить</button>
+          </div>
+          <small id="promoMessage" style="display:block; margin-top:5px; font-size:12px; color:#F7A8D2;"></small>
+        </div>
+        <div class="order-summary-box">Сумма к оплате: <strong id="modalTotalPrice">0</strong> ₽</div>
         <button type="submit" class="btn-submit">Подтвердить заказ</button>
       </form>
     </div>
   </div>
 
-  <!-- ГЛАВНЫЙ БАННЕР -->
-  <section class="hero animate-fade">
+  <section class="hero">
     <div class="hero-content">
       <h1>Чистая эстетика твоей кожи</h1>
       <p>Органическая косметика AURA. Создана, чтобы подчеркнуть твою естественную нежность и заботу в каждом прикосновении.</p>
@@ -90,8 +89,7 @@
     </div>
   </section>
 
-  <!-- О БРЕНДЕ -->
-  <section id="about" class="about-section scroll-reveal">
+  <section id="about" class="about-section">
     <div class="container">
       <div class="about-grid">
         <div class="about-text">
@@ -110,14 +108,13 @@
     </div>
   </section>
 
-  <!-- КАТАЛОГ С ФИЛЬТРАМИ -->
-  <section id="catalog" class="catalog-section scroll-reveal">
+  <section id="catalog" class="catalog-section">
     <div class="container">
       <h2 class="section-title">Коллекция AURA</h2>
       <div class="filter-buttons">
-        <button class="filter-btn active" data-filter="all">Все продукты</button>
-        <button class="filter-btn" data-filter="face">Уход за лицом</button>
-        <button class="filter-btn" data-filter="body">Уход за телом</button>
+        <button class="filter-btn active" onclick="filterCategory('all', this)">Все продукты</button>
+        <button class="filter-btn" onclick="filterCategory('face', this)">Уход за лицом</button>
+        <button class="filter-btn" onclick="filterCategory('body', this)">Уход за телом</button>
       </div>
       <div class="products-grid">
         <div class="product-card" data-category="face">
@@ -126,7 +123,7 @@
             <h3>Пенка с экстрактом розы</h3>
             <p class="prod-desc">Мягко очищает кожу, сохраняя естественный гидролипидный баланс.</p>
             <p class="price">1 200 ₽</p>
-            <button class="btn-buy" data-name="Пенка с экстрактом розы" data-price="1200">В корзину</button>
+            <button class="btn-buy" onclick="addToCart('Пенка с экстрактом розы', 1200)">В корзину</button>
           </div>
         </div>
         <div class="product-card" data-category="face">
@@ -135,7 +132,7 @@
             <h3>Тоник Soft Touch</h3>
             <p class="prod-desc">Мгновенно насыщает клетки влагой и выравнивает тон лица.</p>
             <p class="price">950 ₽</p>
-            <button class="btn-buy" data-name="Тоник Soft Touch" data-price="950">В корзину</button>
+            <button class="btn-buy" onclick="addToCart('Тоник Soft Touch', 950)">В корзину</button>
           </div>
         </div>
         <div class="product-card" data-category="face">
@@ -144,7 +141,7 @@
             <h3>Сыворотка с витамином C</h3>
             <p class="prod-desc">Мощный антиоксидантный заряд для возвращения природного сияния.</p>
             <p class="price">1 850 ₽</p>
-            <button class="btn-buy" data-name="Сыворотка с витамином C" data-price="1850">В корзину</button>
+            <button class="btn-buy" onclick="addToCart('Сыворотка с витамином C', 1850)">В корзину</button>
           </div>
         </div>
         <div class="product-card" data-category="body">
@@ -153,15 +150,14 @@
             <h3>Кокосовый скраб для тела</h3>
             <p class="prod-desc">Бережно отшелушивает и делает кожу шелковистой и мягкой.</p>
             <p class="price">1 400 ₽</p>
-            <button class="btn-buy" data-name="Кокосовый скраб для тела" data-price="1400">В корзину</button>
+            <button class="btn-buy" onclick="addToCart('Кокосовый скраб для тела', 1400)">В корзину</button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ОТЗЫВЫ -->
-  <section id="reviews" class="reviews-section scroll-reveal">
+  <section id="reviews" class="reviews-section">
     <div class="container">
       <h2 class="section-title">Отзывы об AURA</h2>
       <div class="reviews-grid">
@@ -177,26 +173,24 @@
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section id="faq" class="faq-section scroll-reveal">
+  <section id="faq" class="faq-section">
     <div class="container small-container">
       <h2 class="section-title">Частые вопросы</h2>
-      <div class="faq-item">
+      <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Подходит ли косметика для чувствительной кожи? <span>+</span></div>
         <div class="faq-answer">Да, все наши формулы гипоаллергенны и проходят тестирование.</div>
       </div>
-      <div class="faq-item">
+      <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Каковы сроки доставки? <span>+</span></div>
         <div class="faq-answer">Доставка осуществляется по стране от 2 до 5 рабочих дней.</div>
       </div>
     </div>
   </section>
 
-  <!-- ФОРМА ОБРАТНОЙ СВЯЗИ -->
-  <section id="feedback" class="feedback-section scroll-reveal">
+  <section id="feedback" class="feedback-section">
     <div class="container small-container">
       <h2>Остались вопросы?</h2>
-      <form id="contactForm">
+      <form id="contactForm" onsubmit="handleFormSubmit(event)">
         <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
         <div class="form-group"><input type="email" placeholder="Ваш Email" required></div>
         <div class="form-group"><textarea rows="4" placeholder="Ваш вопрос" required></textarea></div>
