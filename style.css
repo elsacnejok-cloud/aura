@@ -35,7 +35,7 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
 .btn-promo-apply{background:#333;color:#fff;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;font-family:'Montserrat',sans-serif}
 #promoMessage{display:block;margin-top:5px;font-size:12px}
 .order-summary-box{background:#FFF0F5;padding:15px;border-radius:8px;font-size:16px;margin:15px 0;text-align:center}
-.hero{height:100vh;background:linear-gradient(rgba(255,240,245,0.5),rgba(255,255,255,0.7)),url('https://unsplash.com') no-repeat center center/cover;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+.hero{height:100vh;background:linear-gradient(rgba(255,240,245,0.5),rgba(255,255,255,0.7)),url(https://ibb.co) no-repeat center center/cover;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
 .hero-content h1{font-size:48px;margin-bottom:20px;color:#2c2c2c}
 .hero-content p{font-size:16px;max-width:600px;margin:0 auto 35px;color:#444;font-weight:400}
 .btn{display:inline-block;padding:14px 40px;background:#fff;color:#333;text-decoration:none;border-radius:50px;border:1px solid #F7A8D2;transition:0.3s;box-shadow:0 5px 15px rgba(247,168,210,0.2)}
