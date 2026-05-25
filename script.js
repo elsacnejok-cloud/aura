@@ -1,11 +1,10 @@
 let cart = [];
 let total = 0;
-let discountApplied = false; // Флаг: применена ли скидка
+let discountApplied = false;
 
-// Секретные промокоды бренда
 const PROMO_CODES = {
-  "AURA10": 0.10, // Скидка 10%
-  "BEAUTY20": 0.20 // Скидка 20%
+  "AURA10": 0.10,
+  "BEAUTY20": 0.20
 };
 
 function toggleCart() {
@@ -49,62 +48,43 @@ function openOrderModal() {
   if (cart.length === 0) return alert('Ваша корзина пуста!');
   toggleCart();
   
-  // Сбрасываем промокод при каждом новом открытии анкеты
   discountApplied = false;
+  const pInput = document.getElementById('promoInput');
+  const pMsg = document.getElementById('promoMessage');
+  if (pInput) pInput.value = '';
+  if (pMsg) pMsg.innerText = '';
   
   const modal = document.getElementById('orderModal');
   const modalTotal = document.getElementById('modalTotalPrice');
-  
   if (modal && modalTotal) {
     modalTotal.innerText = total.toLocaleString();
-    
-    // Динамически добавляем поле промокода в форму, если его там еще нет
-    const form = document.getElementById('checkoutForm');
-    if (form && !document.getElementById('promoInput')) {
-      const promoGroup = document.createElement('div');
-      promoGroup.classList.add('form-group');
-      promoGroup.innerHTML = `
-        <label>Промокод (Попробуй: AURA10)</label>
-        <div style="display:flex; gap:10px;">
-          <input type="text" id="promoInput" placeholder="Введите код" style="margin-bottom:0; flex-grow:1;">
-          <button type="button" onclick="applyPromoCode()" style="background:#333; color:white; border:none; padding:0 15px; border-radius:8px; cursor:pointer;">Применить</button>
-        </div>
-        <small id="promoMessage" style="display:block; margin-top:5px; font-size:12px; color:#F7A8D2;"></small>
-      `;
-      // Вставляем перед блоком итоговой суммы
-      const summary = form.querySelector('.order-summary-box');
-      form.insertBefore(promoGroup, summary);
-    } else {
-      // Если поле уже есть, просто очищаем его
-      document.getElementById('promoInput').value = '';
-      document.getElementById('promoMessage').innerText = '';
-    }
-    
     modal.classList.add('active');
   }
 }
 
-// Функция активации промокода
 function applyPromoCode() {
+  const pInput = document.getElementById('promoInput');
+  const pMsg = document.getElementById('promoMessage');
+  const modalTotal = document.getElementById('modalTotalPrice');
+  if (!pInput || !pMsg || !modalTotal) return;
+
   if (discountApplied) {
-    document.getElementById('promoMessage').innerText = 'Промокод уже применен!';
+    pMsg.style.color = '#ff6961';
+    pMsg.innerText = 'Промокод уже применен!';
     return;
   }
   
-  const code = document.getElementById('promoInput').value.trim().toUpperCase();
-  const messageEl = document.getElementById('promoMessage');
-  const modalTotal = document.getElementById('modalTotalPrice');
-  
+  const code = pInput.value.trim().toUpperCase();
   if (PROMO_CODES[code]) {
     const discount = PROMO_CODES[code];
     const newTotal = total * (1 - discount);
     modalTotal.innerText = Math.round(newTotal).toLocaleString();
     discountApplied = true;
-    messageEl.style.color = '#77dd77';
-    messageEl.innerText = `Успешно! Скидка ${discount * 100}% активирована.`;
+    pMsg.style.color = '#77dd77';
+    pMsg.innerText = `Успешно! Скидка ${discount * 100}% активирована.`;
   } else {
-    messageEl.style.color = '#ff6961';
-    messageEl.innerText = 'Неверный или истекший промокод.';
+    pMsg.style.color = '#ff6961';
+    pMsg.innerText = 'Неверный или истекший промокод.';
   }
 }
 
@@ -115,7 +95,8 @@ function closeOrderModal() {
 
 function submitOrder(event) {
   event.preventDefault();
-  const finalPrice = document.getElementById('modalTotalPrice').innerText;
+  const modalTotal = document.getElementById('modalTotalPrice');
+  const finalPrice = modalTotal ? modalTotal.innerText : total.toLocaleString();
   alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. Команда бренда AURA уже бережно собирает вашу посылку.`);
   cart = [];
   updateCart();
@@ -159,3 +140,4 @@ function handleFormSubmit(event) {
     success.style.display = 'block';
   }
 }
+
