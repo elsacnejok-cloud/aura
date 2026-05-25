@@ -19,6 +19,11 @@ function addToCart(name, price) {
   if (sidebar) sidebar.classList.add('active');
 }
 
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
 function updateCart() {
   const countBadge = document.querySelector('.cart-count');
   if (countBadge) countBadge.innerText = cart.length;
@@ -33,11 +38,17 @@ function updateCart() {
   } else {
     cartBody.innerHTML = '';
     total = 0;
-    cart.forEach((item) => {
+    cart.forEach((item, index) => {
       total += item.price;
       const itemEl = document.createElement('div');
       itemEl.classList.add('cart-item');
-      itemEl.innerHTML = `<span>${item.name}</span><strong>${item.price} ₽</strong>`;
+      itemEl.innerHTML = `
+        <div class="cart-item-info">
+          <span>${item.name}</span>
+          <strong>${item.price} ₽</strong>
+        </div>
+        <button class="btn-remove-item" onclick="removeFromCart(${index})">&times;</button>
+      `;
       cartBody.appendChild(itemEl);
     });
   }
