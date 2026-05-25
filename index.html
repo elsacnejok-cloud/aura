@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head> <link rel="stylesheet" href="style.css">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AURA | Эстетика ухода</title>
   <link href="https://googleapis.com" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <div class="sale-banner">✨ Скидка 20% по промокоду BEAUTY20 до конца дня! ✨</div>
 
   <header class="navbar">
     <div class="logo">AURA</div>
@@ -68,12 +71,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Промокод (Попробуй: AURA10)</label>
+          <label>Промокод</label>
           <div style="display:flex; gap:10px;">
             <input type="text" id="promoInput" placeholder="Введите код" style="margin-bottom:0; flex-grow:1;">
-            <button type="button" onclick="applyPromoCode()" style="background:#333; color:white; border:none; padding:0 15px; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif;">Применить</button>
+            <button type="button" onclick="applyPromoCode()" class="btn-promo-apply">Применить</button>
           </div>
-          <small id="promoMessage" style="display:block; margin-top:5px; font-size:12px; color:#F7A8D2;"></small>
+          <small id="promoMessage"></small>
         </div>
         <div class="order-summary-box">Сумма к оплате: <strong id="modalTotalPrice">0</strong> ₽</div>
         <button type="submit" class="btn-submit">Подтвердить заказ</button>
@@ -102,7 +105,7 @@
           </ul>
         </div>
         <div class="about-image">
-          <div class="placeholder-svg-container main-art"><span>AURA care</span></div>
+          <img src="https://unsplash.com" alt="Философия AURA бренда" class="aesthetic-img">
         </div>
       </div>
     </div>
@@ -117,8 +120,12 @@
         <button class="filter-btn" onclick="filterCategory('body', this)">Уход за телом</button>
       </div>
       <div class="products-grid">
+        
         <div class="product-card" data-category="face">
-          <div class="product-img-box theme-p1"><span class="badge">Топ</span><div class="prod-tag">Pianka</div></div>
+          <div class="product-img-box">
+            <span class="badge">Топ</span>
+            <img src="https://unsplash.com" alt="Пенка для умывания">
+          </div>
           <div class="product-info">
             <h3>Пенка с экстрактом розы</h3>
             <p class="prod-desc">Мягко очищает кожу, сохраняя естественный гидролипидный баланс.</p>
@@ -126,8 +133,11 @@
             <button class="btn-buy" onclick="addToCart('Пенка с экстрактом розы', 1200)">В корзину</button>
           </div>
         </div>
+
         <div class="product-card" data-category="face">
-          <div class="product-img-box theme-p2"><div class="prod-tag">Tonic</div></div>
+          <div class="product-img-box">
+            <img src="https://unsplash.com" alt="Тоник для лица">
+          </div>
           <div class="product-info">
             <h3>Тоник Soft Touch</h3>
             <p class="prod-desc">Мгновенно насыщает клетки влагой и выравнивает тон лица.</p>
@@ -135,8 +145,12 @@
             <button class="btn-buy" onclick="addToCart('Тоник Soft Touch', 950)">В корзину</button>
           </div>
         </div>
+
         <div class="product-card" data-category="face">
-          <div class="product-img-box theme-p3"><span class="badge">New</span><div class="prod-tag">Serum</div></div>
+          <div class="product-img-box">
+            <span class="badge">New</span>
+            <img src="https://unsplash.com" alt="Сыворотка для лица">
+          </div>
           <div class="product-info">
             <h3>Сыворотка с витамином C</h3>
             <p class="prod-desc">Мощный антиоксидантный заряд для возвращения природного сияния.</p>
@@ -144,8 +158,12 @@
             <button class="btn-buy" onclick="addToCart('Сыворотка с витамином C', 1850)">В корзину</button>
           </div>
         </div>
+
         <div class="product-card" data-category="body">
-          <div class="product-img-box theme-p4"><span class="badge">Топ</span><div class="prod-tag">Scrub</div></div>
+          <div class="product-img-box">
+            <span class="badge">Топ</span>
+            <img src="https://unsplash.com" alt="Скраб для тела">
+          </div>
           <div class="product-info">
             <h3>Кокосовый скраб для тела</h3>
             <p class="prod-desc">Бережно отшелушивает и делает кожу шелковистой и мягкой.</p>
@@ -153,6 +171,7 @@
             <button class="btn-buy" onclick="addToCart('Кокосовый скраб для тела', 1400)">В корзину</button>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -210,5 +229,3 @@
     <div class="footer-bottom"><p>&copy; 2026 AURA. Все права защищены.</p></div>
   </footer>
 
-</body> <script src="script.js"></script>
-</html>
