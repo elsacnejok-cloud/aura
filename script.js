@@ -1,144 +1,104 @@
-let cart = [];
-let total = 0;
-let discountApplied = false;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Montserrat', sans-serif; background-color: #FFFFFF; color: #333; line-height: 1.6; overflow-x: hidden; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.small-container { max-width: 600px; }
+h1, h2, h3, .logo { font-family: 'Playfair Display', serif; }
 
-const PROMO_CODES = {
-  "AURA10": 0.10,
-  "BEAUTY20": 0.20
-};
+.sale-banner { background-color: #FFF0F5; color: #F7A8D2; text-align: center; padding: 8px 10px; font-size: 12px; font-weight: 500; letter-spacing: 1px; width: 100%; position: fixed; top: 0; left: 0; z-index: 1001; }
 
-function toggleCart() {
-  const sidebar = document.getElementById('cartSidebar');
-  if (sidebar) sidebar.classList.toggle('active');
-}
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: rgba(255, 255, 255, 0.95); position: fixed; top: 34px; left: 0; width: 100%; z-index: 999; border-bottom: 1px solid #FFF0F5; }
+.logo { font-size: 28px; font-weight: 600; letter-spacing: 2px; }
+.nav-links a { text-decoration: none; color: #555; margin: 0 15px; font-size: 14px; transition: color 0.3s; }
+.nav-links a:hover { color: #F7A8D2; }
+.cart-icon { cursor: pointer; font-size: 20px; position: relative; }
+.cart-count { background-color: #F7A8D2; color: white; padding: 2px 7px; border-radius: 50%; font-size: 12px; position: absolute; top: -10px; right: -10px; }
 
-function addToCart(name, price) {
-  cart.push({ name, price });
-  updateCart();
-  const sidebar = document.getElementById('cartSidebar');
-  if (sidebar) sidebar.classList.add('active');
-}
+.cart-sidebar { position: fixed; top: 0; right: -350px; width: 350px; height: 100vh; background: #fff; box-shadow: -5px 0 15px rgba(0,0,0,0.05); z-index: 1000; transition: right 0.3s ease-in-out; display: flex; flex-direction: column; padding: 30px 20px; border-left: 1px solid #FFF0F5; }
+.cart-sidebar.active { right: 0; }
+.cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #FFF0F5; padding-bottom: 15px; }
+.close-cart { font-size: 28px; cursor: pointer; color: #999; }
+.cart-body { flex-grow: 1; overflow-y: auto; padding-top: 15px; }
+.cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #FFF0F5; font-size: 14px; }
+.empty-cart-msg { text-align: center; color: #999; margin-top: 50px; }
+.cart-footer { border-top: 1px solid #FFF0F5; padding-top: 20px; }
+.total-price { font-size: 18px; font-weight: 600; margin-bottom: 15px; }
+.btn-checkout { width: 100%; padding: 12px; background: #F7A8D2; color: white; border: none; border-radius: 25px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 500; }
 
-function updateCart() {
-  const countBadge = document.querySelector('.cart-count');
-  if (countBadge) countBadge.innerText = cart.length;
-  
-  const cartBody = document.getElementById('cartBody');
-  const cartTotal = document.getElementById('cartTotal');
-  if (!cartBody || !cartTotal) return;
-  
-  if (cart.length === 0) {
-    cartBody.innerHTML = '<p class="empty-cart-msg">Корзина пока пуста</p>';
-    total = 0;
-  } else {
-    cartBody.innerHTML = '';
-    total = 0;
-    cart.forEach((item) => {
-      total += item.price;
-      const itemEl = document.createElement('div');
-      itemEl.classList.add('cart-item');
-      itemEl.innerHTML = `<span>${item.name}</span><strong>${item.price} ₽</strong>`;
-      cartBody.appendChild(itemEl);
-    });
-  }
-  cartTotal.innerText = total.toLocaleString();
-}
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.order-modal-box { background: white; padding: 30px; border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+.close-modal { position: absolute; top: 20px; right: 20px; font-size: 28px; cursor: pointer; color: #999; }
+.modal-subtitle { font-size: 13px; color: #777; margin-bottom: 20px; text-align: center; }
+.order-modal-box h3 { text-align: center; margin-bottom: 5px; font-size: 24px; }
+.order-modal-box label { font-size: 12px; font-weight: 600; text-transform: uppercase; color: #777; display: block; margin-bottom: 6px; }
+.order-modal-box input, .order-modal-box select { width: 100%; padding: 10px; border: 1px solid #FFF0F5; background: #FCF9FA; border-radius: 8px; font-family: 'Montserrat', sans-serif; margin-bottom: 12px; outline: none; }
+.btn-promo-apply { background: #333; color: white; border: none; padding: 0 15px; border-radius: 8px; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+#promoMessage { display: block; margin-top: 5px; font-size: 12px; }
+.order-summary-box { background: #FFF0F5; padding: 15px; border-radius: 8px; font-size: 16px; margin: 15px 0; text-align: center; }
 
-function openOrderModal() {
-  if (cart.length === 0) return alert('Ваша корзина пуста!');
-  toggleCart();
-  
-  discountApplied = false;
-  const pInput = document.getElementById('promoInput');
-  const pMsg = document.getElementById('promoMessage');
-  if (pInput) pInput.value = '';
-  if (pMsg) pMsg.innerText = '';
-  
-  const modal = document.getElementById('orderModal');
-  const modalTotal = document.getElementById('modalTotalPrice');
-  if (modal && modalTotal) {
-    modalTotal.innerText = total.toLocaleString();
-    modal.classList.add('active');
-  }
-}
+/* БАННЕР С НЕЙРОСЕТЕВОЙ МОДЕЛЬЮ НА ФОНЕ */
+.hero { height: 100vh; background: linear-gradient(rgba(255, 240, 245, 0.4), rgba(255, 255, 255, 0.7)), url('https://unsplash.com') no-repeat center center/cover; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+.hero-content h1 { font-size: 48px; margin-bottom: 20px; color: #2c2c2c; text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
+.hero-content p { font-size: 16px; max-width: 600px; margin: 0 auto 35px; color: #444; font-weight: 400; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+.btn { display: inline-block; padding: 14px 40px; background: #fff; color: #333; text-decoration: none; border-radius: 50px; border: 1px solid #F7A8D2; transition: 0.3s; box-shadow: 0 5px 15px rgba(247, 168, 210, 0.3); font-weight: 500; }
+.btn:hover { background: #F7A8D2; color: #fff; }
 
-function applyPromoCode() {
-  const pInput = document.getElementById('promoInput');
-  const pMsg = document.getElementById('promoMessage');
-  const modalTotal = document.getElementById('modalTotalPrice');
-  if (!pInput || !pMsg || !modalTotal) return;
+.about-section { padding: 80px 0; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.about-text h2 { font-size: 36px; margin-bottom: 20px; }
+.about-text ul li { margin-bottom: 12px; list-style: none; }
+.aesthetic-img { width: 100%; height: 380px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
 
-  if (discountApplied) {
-    pMsg.style.color = '#ff6961';
-    pMsg.innerText = 'Промокод уже применен!';
-    return;
-  }
-  
-  const code = pInput.value.trim().toUpperCase();
-  if (PROMO_CODES[code]) {
-    const discount = PROMO_CODES[code];
-    const newTotal = total * (1 - discount);
-    modalTotal.innerText = Math.round(newTotal).toLocaleString();
-    discountApplied = true;
-    pMsg.style.color = '#77dd77';
-    pMsg.innerText = `Успешно! Скидка ${discount * 100}% активирована.`;
-  } else {
-    pMsg.style.color = '#ff6961';
-    pMsg.innerText = 'Неверный или истекший промокод.';
-  }
-}
+.catalog-section { padding: 80px 0; background-color: #FCF9FA; }
+.section-title { text-align: center; font-size: 36px; margin-bottom: 40px; }
+.filter-buttons { text-align: center; margin-bottom: 35px; }
+.filter-btn { padding: 10px 25px; margin: 5px; background: #fff; border: 1px solid #F7A8D2; border-radius: 20px; cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif; }
+.filter-btn.active, .filter-btn:hover { background: #F7A8D2; color: #fff; }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+.product-card { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #FFF0F5; display: flex; flex-direction: column; transition: transform 0.3s; }
+.product-card:hover { transform: translateY(-5px); }
+.product-img-box { position: relative; height: 280px; background-color: #FDF0F6; overflow: hidden; }
+.product-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.product-card:hover .product-img-box img { transform: scale(1.05); }
 
-function closeOrderModal() {
-  const modal = document.getElementById('orderModal');
-  if (modal) modal.classList.remove('active');
-}
+.badge { position: absolute; top: 15px; left: 15px; background: #F7A8D2; color: #fff; padding: 4px 12px; font-size: 11px; text-transform: uppercase; border-radius: 20px; font-family: 'Montserrat', sans-serif; font-weight: 500; z-index: 2; }
+.product-info { padding: 20px; text-align: center; display: flex; flex-direction: column; flex-grow: 1; }
+.product-info h3 { font-size: 18px; margin-bottom: 10px; font-weight: 400; }
+.prod-desc { font-size: 13px; color: #777; margin-bottom: 15px; flex-grow: 1; }
+.price { font-size: 18px; font-weight: 600; color: #F7A8D2; margin-bottom: 15px; }
+.btn-buy { width: 100%; padding: 10px 0; background: #fff; border: 1px solid #F7A8D2; border-radius: 30px; cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif; font-weight: 500; }
+.btn-buy:hover { background: #F7A8D2; color: #fff; }
 
-function submitOrder(event) {
-  event.preventDefault();
-  const modalTotal = document.getElementById('modalTotalPrice');
-  const finalPrice = modalTotal ? modalTotal.innerText : total.toLocaleString();
-  alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. Команда бренда AURA уже бережно собирает вашу посылку.`);
-  cart = [];
-  updateCart();
-  closeOrderModal();
-}
+.reviews-section { padding: 80px 0; background: #fff; }
+.reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.review-card { padding: 30px; background: #FCF9FA; border-radius: 15px; border-left: 4px solid #F7A8D2; }
+.review-text { font-style: italic; margin-bottom: 15px; color: #555; }
 
-function filterCategory(category, buttonElement) {
-  const cards = document.querySelectorAll('.product-card');
-  const buttons = document.querySelectorAll('.filter-btn');
-  buttons.forEach(btn => btn.classList.remove('active'));
-  if (buttonElement) buttonElement.classList.add('active');
+.faq-section { padding: 60px 0; background: #FCF9FA; }
+.faq-item { background: #fff; padding: 20px; margin-bottom: 15px; border-radius: 10px; cursor: pointer; border: 1px solid #FFF0F5; }
+.faq-question { display: flex; justify-content: space-between; font-weight: 500; }
+.faq-answer { display: none; margin-top: 15px; color: #666; font-size: 14px; }
 
-  cards.forEach(card => {
-    if (category === 'all' || card.getAttribute('data-category') === category) {
-      card.style.display = 'flex';
-    } else {
-      card.style.display = 'none';
-    }
-  });
-}
+.feedback-section { padding: 80px 0; text-align: center; }
+.form-group { margin-bottom: 15px; }
+.form-group input, .form-group textarea { width: 100%; padding: 14px; border: 1px solid #FFF0F5; background: #FCF9FA; border-radius: 10px; font-family: 'Montserrat', sans-serif; outline: none; }
+.form-group input:focus, .form-group textarea:focus { border-color: #F7A8D2; }
+.btn-submit { width: 100%; padding: 14px; background: #333; color: white; border: none; border-radius: 10px; cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif; font-weight: 500; }
+.btn-submit:hover { background: #F7A8D2; }
+.success-message { display: none; margin-top: 20px; color: #F7A8D2; font-weight: 500; }
 
-function toggleFaq(element) {
-  const answer = element.querySelector('.faq-answer');
-  const span = element.querySelector('.faq-question span');
-  if (!answer || !span) return;
-  if (answer.style.display === 'block') {
-    answer.style.display = 'none';
-    span.innerText = '+';
-  } else {
-    answer.style.display = 'block';
-    span.innerText = '−';
-  }
-}
+.footer { background: #FCF9FA; padding: 50px 0 20px; border-top: 1px solid #FFF0F5; }
+.footer-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; }
+.footer-bottom { text-align: center; margin-top: 30px; font-size: 12px; color: #999; border-top: 1px solid #FFF0F5; padding-top: 20px; }
 
-function handleFormSubmit(event) {
-  event.preventDefault();
-  const form = document.getElementById('contactForm');
-  const success = document.getElementById('formSuccess');
-  if (form && success) {
-    form.style.display = 'none';
-    success.style.display = 'block';
-  }
+@media (max-width: 768px) {
+  .navbar { padding: 15px 20px; }
+  .nav-links { display: none; }
+  .hero-content h1 { font-size: 32px; }
+  .about-grid, .reviews-grid { grid-template-columns: 1fr; gap: 30px; }
+  .cart-sidebar { width: 100%; right: -100%; }
+  .order-modal-box { padding: 20px; }
 }
 
 
