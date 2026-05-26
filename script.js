@@ -2,7 +2,11 @@ let cart = [];
 let total = 0;
 let discountApplied = false;
 
-// Добавили промокод MELLSTROY в общий список со скидкой 20% (0.20)
+// Бонусная система
+let userBonusPoints = parseInt(localStorage.getItem('aura_bonus_points')) || 0; // Загружаем баллы из памяти
+let bonusSpentThisOrder = 0; // Сколько баллов списываем в текущем заказе
+
+// Добавили промокод MELLSTROY в общий список со скидкой 20%
 const PROMO_CODES = {
   "AURA10": 0.10,
   "BEAUTY20": 0.20,
@@ -25,18 +29,27 @@ setInterval(createPetal, 4000);
 function toggleCart() {
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.toggle('active');
+  // При открытии корзины обновляем баланс баллов на экране
+  if (sidebar && sidebar.classList.contains('active')) {
+    updateBonusUI();
+  }
 }
 
 function addToCart(name, price) {
   cart.push({ name, price });
+  // Сбрасываем списание баллов при изменении корзины, чтобы пересчитать честно
+  bonusSpentThisOrder = 0; 
+  document.getElementById('bonusAppliedMessage').style.display = 'none';
+  
   updateCart();
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.add('active');
 }
 
-// Удаление товара из корзины
 function removeFromCart(index) {
   cart.splice(index, 1);
+  bonusSpentThisOrder = 0; // Сбрасываем бонусы
+  document.getElementById('bonusAppliedMessage').style.display = 'none';
   updateCart();
 }
 
@@ -46,11 +59,14 @@ function updateCart() {
   
   const cartBody = document.getElementById('cartBody');
   const cartTotal = document.getElementById('cartTotal');
+  const pendingBonusInfo = document.getElementById('pendingBonusInfo');
+  
   if (!cartBody || !cartTotal) return;
   
   if (cart.length === 0) {
     cartBody.innerHTML = '<p class="empty-cart-msg">Корзина пока пуста</p>';
     total = 0;
+    if (pendingBonusInfo) pendingBonusInfo.innerText = '+0 баллов будет начислено';
   } else {
     cartBody.innerHTML = '';
     total = 0;
@@ -67,8 +83,57 @@ function updateCart() {
       `;
       cartBody.appendChild(itemEl);
     });
+    
+    // Считаем кэшбэк 10% от текущей корзины
+    if (pendingBonusInfo) {
+      let potentialCashback = Math.floor(total * 0.10);
+      pendingBonusInfo.innerText = `+${potentialCashback} баллов будет начислено после заказа`;
+    }
   }
-  cartTotal.innerText = total.toLocaleString();
+  
+  // Рассчитываем итоговую цену в корзине с учетом списанных баллов
+  let finalCartTotal = total - bonusSpentThisOrder;
+  if (finalCartTotal < 0) finalCartTotal = 0;
+  cartTotal.innerText = finalCartTotal.toLocaleString();
+  
+  updateBonusUI();
+}
+
+// Функция обновления интерфейса баллов
+function updateBonusUI() {
+  const balanceEl = document.getElementById('userBonusBalance');
+  const spendSection = document.getElementById('spendBonusSection');
+  
+  if (balanceEl) balanceEl.innerText = userBonusPoints;
+  
+  // Показываем кнопку «Списать», только если у юзера есть баллы и в корзине что-то лежит
+  if (spendSection) {
+    if (userBonusPoints > 0 && cart.length > 0 && bonusSpentThisOrder === 0) {
+      spendSection.style.display = 'flex';
+    } else {
+      spendSection.style.display = 'none';
+    }
+  }
+}
+
+// Кнопка списания баллов
+function spendBonusPoints() {
+  if (userBonusPoints === 0 || total === 0) return;
+  
+  // Нельзя оплатить баллами больше, чем стоит сам заказ
+  if (userBonusPoints >= total) {
+    bonusSpentThisOrder = total;
+  } else {
+    bonusSpentThisOrder = userBonusPoints;
+  }
+  
+  const appliedMsg = document.getElementById('bonusAppliedMessage');
+  if (appliedMsg) {
+    appliedMsg.style.display = 'block';
+    appliedMsg.innerText = `📉 Списано ${bonusSpentThisOrder} баллов в счет оплаты!`;
+  }
+  
+  updateCart();
 }
 
 function openOrderModal() {
@@ -84,7 +149,11 @@ function openOrderModal() {
   const modal = document.getElementById('orderModal');
   const modalTotal = document.getElementById('modalTotalPrice');
   if (modal && modalTotal) {
-    modalTotal.innerText = total.toLocaleString();
+    // Цена в модалке учитывает промокод И списанные бонусы
+    let finalModalPrice = total - bonusSpentThisOrder;
+    if (finalModalPrice < 0) finalModalPrice = 0;
+    
+    modalTotal.innerText = finalModalPrice.toLocaleString();
     modal.classList.add('active');
   }
 }
@@ -104,11 +173,15 @@ function applyPromoCode() {
   const code = pInput.value.trim().toUpperCase();
   if (PROMO_CODES[code]) {
     const discount = PROMO_CODES[code];
-    const newTotal = total * (1 - discount);
+    
+    // Промокод применяется к цене ПОСЛЕ вычета бонусов
+    let basePrice = total - bonusSpentThisOrder;
+    if (basePrice < 0) basePrice = 0;
+    
+    const newTotal = basePrice * (1 - discount);
     modalTotal.innerText = Math.round(newTotal).toLocaleString();
     discountApplied = true;
     
-    // Специальное кастомное сообщение для промокода Мелстроя
     if (code === 'MELLSTROY') {
       pMsg.style.color = '#77dd77';
       pMsg.innerText = '🔥 Коллаба с Мелстроем! Скидка 20% успешно применилась!';
@@ -135,13 +208,23 @@ function submitOrder(event) {
   // Проверяем, есть ли в корзине бокс Бурмалда
   const hasBurmalda = cart.some(item => item.name === 'Бокс БУРМАЛДА');
   
+  // Начисляем новые баллы за покупку (10% от чистой стоимости товаров)
+  let earnedPoints = Math.floor(total * 0.10);
+  
+  // Вычитаем списанные баллы и добавляем заработанные
+  userBonusPoints = userBonusPoints - bonusSpentThisOrder + earnedPoints;
+  localStorage.setItem('aura_bonus_points', userBonusPoints); // Сохраняем в память
+  
   if (hasBurmalda) {
-    alert(`🎉 Заказ на сумму ${finalPrice} ₽ успешно оформлен! БУРМАЛДА АКТИВИРОВАНА! ⚡ Мелстрой гордится вами.`);
+    alert(`🎉 Заказ на сумму ${finalPrice} ₽ успешно оформлен! БУРМАЛДА АКТИВИРОВАНА! ⚡ Вы получили +${earnedPoints} бьюти-баллов!`);
   } else {
-    alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. Команда бренда AURA уже бережно собирает вашу посылку.`);
+    alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. На ваш баланс начислено +${earnedPoints} баллов!`);
   }
   
+  // Сбрасываем корзину
   cart = [];
+  bonusSpentThisOrder = 0;
+  document.getElementById('bonusAppliedMessage').style.display = 'none';
   updateCart();
   closeOrderModal();
 }
