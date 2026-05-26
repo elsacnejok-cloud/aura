@@ -2,11 +2,7 @@ let cart = [];
 let total = 0;
 let discountApplied = false;
 
-// Бонусная система и Профиль
-let userBonusPoints = parseInt(localStorage.getItem('aura_bonus_points')) || 0;
-let bonusSpentThisOrder = 0;
-let currentUser = JSON.parse(localStorage.getItem('aura_user')) || null;
-
+// Добавили промокод MELLSTROY в общий список со скидкой 20% (0.20)
 const PROMO_CODES = {
   "AURA10": 0.10,
   "BEAUTY20": 0.20,
@@ -26,110 +22,21 @@ function createPetal() {
 }
 setInterval(createPetal, 4000);
 
-// Инициализация при загрузке страницы
-window.onload = function() {
-  updateAuthUI();
-  updateCart();
-};
-
-/* --- СИСТЕМА ПРОФИЛЯ --- */
-function openAuthModal() {
-  const modal = document.getElementById('authModal');
-  if (modal) modal.classList.add('active');
-}
-
-function closeAuthModal() {
-  const modal = document.getElementById('authModal');
-  if (modal) modal.classList.remove('active');
-}
-
-function loginUser(event) {
-  event.preventDefault();
-  const name = document.getElementById('authNameInput').value.trim();
-  const phone = document.getElementById('authPhoneInput').value.trim();
-  
-  currentUser = { name, phone };
-  localStorage.setItem('aura_user', JSON.stringify(currentUser));
-  
-  closeAuthModal();
-  updateAuthUI();
-}
-
-function logoutUser(event) {
-  event.stopPropagation();
-  localStorage.removeItem('aura_user');
-  currentUser = null;
-  updateAuthUI();
-}
-
-function toggleProfileDropdown() {
-  const dropdown = document.getElementById('profileDropdown');
-  if (dropdown) {
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-  }
-}
-
-window.addEventListener('click', function(e) {
-  const dropdown = document.getElementById('profileDropdown');
-  const profileBox = document.getElementById('userProfileBox');
-  if (dropdown && profileBox && !profileBox.contains(e.target)) {
-    dropdown.style.display = 'none';
-  }
-});
-
-function updateAuthUI() {
-  const authBtn = document.getElementById('authBtn');
-  const profileBox = document.getElementById('userProfileBox');
-  const profileName = document.getElementById('profileUserName');
-  const statusBadge = document.getElementById('userStatusBadge');
-  
-  if (!authBtn || !profileBox || !profileName) return;
-  
-  if (currentUser) {
-    authBtn.style.display = 'none';
-    profileBox.style.display = 'flex';
-    profileName.innerText = currentUser.name;
-    
-    if (userBonusPoints >= 3000) {
-      statusBadge.innerText = '👑 VIP-Бурмалда';
-      statusBadge.style.color = '#ff0055';
-    } else if (userBonusPoints >= 1000) {
-      statusBadge.innerText = '✨ Бьюти-Эксперт';
-      statusBadge.style.color = '#7a00ff';
-    } else {
-      statusBadge.innerText = '🌱 Ценитель Эстетики';
-      statusBadge.style.color = '#333';
-    }
-  } else {
-    authBtn.style.display = 'block';
-    profileBox.style.display = 'none';
-  }
-}
-
-/* --- КОРЗИНА --- */
 function toggleCart() {
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.toggle('active');
-  if (sidebar && sidebar.classList.contains('active')) {
-    updateBonusUI();
-  }
 }
 
 function addToCart(name, price) {
   cart.push({ name, price });
-  bonusSpentThisOrder = 0; 
-  const bMsg = document.getElementById('bonusAppliedMessage');
-  if (bMsg) bMsg.style.display = 'none';
   updateCart();
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.add('active');
 }
 
+// Удаление товара из корзины
 function removeFromCart(index) {
   cart.splice(index, 1);
-  bonusSpentThisOrder = 0;
-  const bMsg = document.getElementById('bonusAppliedMessage');
-  if (bMsg) bMsg.style.display = 'none';
   updateCart();
 }
 
@@ -139,14 +46,11 @@ function updateCart() {
   
   const cartBody = document.getElementById('cartBody');
   const cartTotal = document.getElementById('cartTotal');
-  const pendingBonusInfo = document.getElementById('pendingBonusInfo');
-  
   if (!cartBody || !cartTotal) return;
   
   if (cart.length === 0) {
     cartBody.innerHTML = '<p class="empty-cart-msg">Корзина пока пуста</p>';
     total = 0;
-    if (pendingBonusInfo) pendingBonusInfo.innerText = '+0 баллов будет начислено';
   } else {
     cartBody.innerHTML = '';
     total = 0;
@@ -163,46 +67,10 @@ function updateCart() {
       `;
       cartBody.appendChild(itemEl);
     });
-    
-    if (pendingBonusInfo) {
-      let potentialCashback = Math.floor(total * 0.10);
-      pendingBonusInfo.innerText = `+${potentialCashback} баллов будет начислено после заказа`;
-    }
   }
-  
-  let finalCartTotal = total - bonusSpentThisOrder;
-  if (finalCartTotal < 0) finalCartTotal = 0;
-  cartTotal.innerText = finalCartTotal.toLocaleString();
-  
-  updateBonusUI();
+  cartTotal.innerText = total.toLocaleString();
 }
 
-function updateBonusUI() {
-  const balanceEl = document.getElementById('userBonusBalance');
-  const spendSection = document.getElementById('spendBonusSection');
-  if (balanceEl) balanceEl.innerText = userBonusPoints;
-  
-  if (spendSection) {
-    if (userBonusPoints > 0 && cart.length > 0 && bonusSpentThisOrder === 0) {
-      spendSection.style.display = 'flex';
-    } else {
-      spendSection.style.display = 'none';
-    }
-  }
-}
-
-function spendBonusPoints() {
-  if (userBonusPoints === 0 || total === 0) return;
-  bonusSpentThisOrder = userBonusPoints >= total ? total : userBonusPoints;
-  const appliedMsg = document.getElementById('bonusAppliedMessage');
-  if (appliedMsg) {
-    appliedMsg.style.display = 'block';
-    appliedMsg.innerText = `📉 Списано ${bonusSpentThisOrder} баллов в счет оплаты!`;
-  }
-  updateCart();
-}
-
-/* --- ОКНО ЗАКАЗА И ПРОМОКОДЫ --- */
 function openOrderModal() {
   if (cart.length === 0) return alert('Ваша корзина пуста!');
   toggleCart();
@@ -216,16 +84,9 @@ function openOrderModal() {
   const modal = document.getElementById('orderModal');
   const modalTotal = document.getElementById('modalTotalPrice');
   if (modal && modalTotal) {
-    let finalModalPrice = total - bonusSpentThisOrder;
-    if (finalModalPrice < 0) finalModalPrice = 0;
-    modalTotal.innerText = finalModalPrice.toLocaleString();
+    modalTotal.innerText = total.toLocaleString();
     modal.classList.add('active');
   }
-}
-
-function closeOrderModal() {
-  const modal = document.getElementById('orderModal');
-  if (modal) modal.classList.remove('active');
 }
 
 function applyPromoCode() {
@@ -243,72 +104,83 @@ function applyPromoCode() {
   const code = pInput.value.trim().toUpperCase();
   if (PROMO_CODES[code]) {
     const discount = PROMO_CODES[code];
-    let basePrice = total - bonusSpentThisOrder;
-    if (basePrice < 0) basePrice = 0;
-    
-    const newTotal = basePrice * (1 - discount);
+    const newTotal = total * (1 - discount);
     modalTotal.innerText = Math.round(newTotal).toLocaleString();
     discountApplied = true;
     
+    // Специальное кастомное сообщение для промокода Мелстроя
     if (code === 'MELLSTROY') {
       pMsg.style.color = '#77dd77';
-      pMsg.innerText = '🔥 Коллаба с Мелстроем! Скидка 20% успешна!';
+      pMsg.innerText = '🔥 Коллаба с Мелстроем! Скидка 20% успешно применилась!';
     } else {
       pMsg.style.color = '#77dd77';
-      pMsg.innerText = `Промокод применен! Скидка ${discount * 100}%`;
+      pMsg.innerText = `Успешно! Скидка ${discount * 100}% активирована.`;
     }
   } else {
     pMsg.style.color = '#ff6961';
-    pMsg.innerText = 'Неверный промокод!';
+    pMsg.innerText = 'Неверный или истекший промокод.';
   }
+}
+
+function closeOrderModal() {
+  const modal = document.getElementById('orderModal');
+  if (modal) modal.classList.remove('active');
 }
 
 function submitOrder(event) {
   event.preventDefault();
-  alert('✨ Заказ успешно оформлен! Спасибо, что выбираете AURA.');
+  const modalTotal = document.getElementById('modalTotalPrice');
+  const finalPrice = modalTotal ? modalTotal.innerText : total.toLocaleString();
+  
+  // Проверяем, есть ли в корзине бокс Бурмалда
+  const hasBurmalda = cart.some(item => item.name === 'Бокс БУРМАЛДА');
+  
+  if (hasBurmalda) {
+    alert(`🎉 Заказ на сумму ${finalPrice} ₽ успешно оформлен! БУРМАЛДА АКТИВИРОВАНА! ⚡ Мелстрой гордится вами.`);
+  } else {
+    alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. Команда бренда AURA уже бережно собирает вашу посылку.`);
+  }
+  
   cart = [];
-  bonusSpentThisOrder = 0;
-  discountApplied = false;
-  const modal = document.getElementById('orderModal');
-  if (modal) modal.classList.remove('active');
   updateCart();
+  closeOrderModal();
 }
 
-/* --- ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ --- */
 function filterCategory(category, buttonElement) {
+  const cards = document.querySelectorAll('.product-card');
   const buttons = document.querySelectorAll('.filter-btn');
   buttons.forEach(btn => btn.classList.remove('active'));
   if (buttonElement) buttonElement.classList.add('active');
 
-  const products = document.querySelectorAll('.product-card');
-  products.forEach(product => {
-    const productCategory = product.getAttribute('data-category');
-    if (category === 'all' || productCategory === category) {
-      product.style.display = 'block';
+  cards.forEach(card => {
+    if (category === 'all' || card.getAttribute('data-category') === category) {
+      card.style.display = 'flex';
     } else {
-      product.style.display = 'none';
+      card.style.display = 'none';
     }
   });
 }
 
 function toggleFaq(element) {
-  element.classList.toggle('active');
   const answer = element.querySelector('.faq-answer');
   const span = element.querySelector('.faq-question span');
-  
-  if (element.classList.contains('active')) {
-    if (answer) answer.style.display = 'block';
-    if (span) span.innerText = '−';
+  if (!answer || !span) return;
+  if (answer.style.display === 'block') {
+    answer.style.display = 'none';
+    span.innerText = '+';
   } else {
-    if (answer) answer.style.display = 'none';
-    if (span) span.innerText = '+';
+    answer.style.display = 'block';
+    span.innerText = '−';
   }
 }
 
 function handleFormSubmit(event) {
   event.preventDefault();
-  const successMessage = document.getElementById('formSuccess');
-  if (successMessage) successMessage.style.display = 'block';
   const form = document.getElementById('contactForm');
-  if (form) form.reset();
+  const success = document.getElementById('formSuccess');
+  if (form && success) {
+    form.style.display = 'none';
+    success.style.display = 'block';
+  }
 }
+
