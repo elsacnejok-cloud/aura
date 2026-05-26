@@ -6,7 +6,7 @@ body{
     color: #333;
     line-height: 1.6;
     overflow-x: hidden;
-    background-image: url('bg-roses.png'); /* Путь к картинке зафиксирован */
+    background-image: url(rose.ui.png); /* Путь к картинке зафиксирован */
     background-repeat: no-repeat;         
     background-attachment: fixed;         
     background-position: center center;   
