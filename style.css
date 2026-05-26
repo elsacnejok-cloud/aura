@@ -1,6 +1,21 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Montserrat',sans-serif;background:#FFF;color:#333;line-height:1.6;overflow-x:hidden}
+body{font-family: 'Montserrat', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image: url('bg-roses.jpg'); /* Путь к картинке */
+    background-repeat: no-repeat;         /* Картинка не будет дублироваться */
+    background-attachment: fixed;         /* Розы зафиксированы по бокам при скролле */
+    background-position: center center;   /* Белая полоса строго по центру */
+    background-size: cover;               /* Красиво растягивается под любой экран */}
+@media (max-width: 1200px) {
+    .container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 16px;
+    }
+}
 .container{max-width:1200px;margin:0 auto;padding:0 20px}
 .small-container{max-width:600px}
 h1,h2,h3,.logo{font-family:'Playfair Display',serif}
@@ -13,7 +28,8 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
 .cart-count{background:#F7A8D2;color:#fff;padding:2px 7px;border-radius:50%;font-size:12px;position:absolute;top:-10px;right:-10px}
 .cart-sidebar{position:fixed;top:0;right:-350px;width:350px;height:100vh;background:#fff;box-shadow:-5px 0 15px rgba(0,0,0,0.05);z-index:1000;transition:right 0.3s ease-in-out;display:flex;flex-direction:column;padding:30px 20px;border-left:1px solid #FFF0F5}
 .cart-sidebar.active{right:0}
-.cart-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #FFF0F5;padding-bottom:15px}
+.cart-header{display:flex;justify-content:space-between;align-items:c
+  enter;border-bottom:1px solid #FFF0F5;padding-bottom:15px}
 .close-cart{font-size:28px;cursor:pointer;color:#999}
 .cart-body{flex-grow:1;overflow-y:auto;padding-top:15px}
 .cart-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;padding-bottom:10px;border-bottom:1px dashed #FFF0F5;font-size:14px;gap:15px}
