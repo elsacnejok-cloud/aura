@@ -1,25 +1,29 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 
-body{
+body {
     font-family: 'Montserrat', sans-serif;
     color: #333;
     line-height: 1.6;
     overflow-x: hidden;
-    background-image: url(rose.ui.png); /* Путь к картинке зафиксирован */
+    
+    /* ЭФФЕКТ НЕЖНОЙ ВУАЛИ: Накладываем прозрачный белый цвет (opacity 85%) поверх картинки роз */
+    background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
+                url(rose.ui.png);
+                
     background-repeat: no-repeat;         
     background-attachment: fixed;         
     background-position: center center;   
     background-size: cover;               
 }
 
+/* На мобилках вуаль тоже будет смотреться аккуратно */
 @media (max-width: 1200px) {
     .container {
-        background: rgba(255, 255, 255, 0.9);
         padding: 20px;
-        border-radius: 16px;
     }
 }
+
 
 .container{max-width:1200px;margin:0 auto;padding:0 20px}
 .small-container{max-width:600px}
