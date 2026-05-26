@@ -231,6 +231,11 @@ function openOrderModal() {
   }
 }
 
+function closeOrderModal() {
+  const modal = document.getElementById('orderModal');
+  if (modal) modal.classList.remove('active');
+}
+
 function applyPromoCode() {
   const pInput = document.getElementById('promoInput');
   const pMsg = document.getElementById('promoMessage');
@@ -266,3 +271,39 @@ function applyPromoCode() {
   }
 }
 
+/* --- НОВЫЕ ИСПРАВЛЕННЫЕ ФУНКЦИИ --- */
+
+// Подтверждение и отправка заказа
+function submitOrder(event) {
+  event.preventDefault();
+  alert('✨ Заказ успешно оформлен! Спасибо, что выбираете AURA.');
+  
+  cart = [];
+  bonusSpentThisOrder = 0;
+  discountApplied = false;
+  
+  closeOrderModal();
+  updateCart();
+}
+
+// Переключение категорий в каталоге
+function filterCategory(category, buttonElement) {
+  const buttons = document.querySelectorAll('.filter-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  if (buttonElement) buttonElement.classList.add('active');
+
+  const products = document.querySelectorAll('.product-card');
+  products.forEach(product => {
+    const productCategory = product.getAttribute('data-category');
+    if (category === 'all' || productCategory === category) {
+      product.style.display = 'block';
+    } else {
+      product.style.display = 'none';
+    }
+  });
+}
+
+// Раскрытие вопросов в FAQ
+function toggleFaq(element) {
+  element.classList.toggle('active');
+  const answer = element.querySelector('.faq-answer');
