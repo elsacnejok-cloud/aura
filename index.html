@@ -9,13 +9,7 @@
 </head>
 <body>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Чистая эстетика твоей кожи</h1>
-      <p>Органическая косметика AURA. Создана, чтобы подчеркнуть твою естественную нежность и заботу в каждом прикосновении.</p>
-      <a href="#catalog" class="btn">Перейти к покупкам</a>
-    </div>
-  </section>
+  <div class="sale-banner">✨ Скидка 20% по промокоду BEAUTY20 до конца дня! ✨</div>
 
   <header class="navbar">
     <div class="logo">AURA</div>
@@ -26,74 +20,25 @@
       <a href="#faq">FAQ</a>
       <a href="#feedback">Контакты</a>
     </nav>
-    
-    <div class="profile-section" style="display: flex; align-items: center; gap: 15px; margin-right: 15px;">
-      <button id="authBtn" onclick="openAuthModal()" style="background: none; border: 1px solid #F7A8D2; padding: 6px 15px; border-radius: 20px; font-family: 'Montserrat', sans-serif; font-size: 13px; cursor: pointer; transition: 0.3s;">Войти</button>
-      
-      <div id="userProfileBox" style="display: none; align-items: center; gap: 8px; cursor: pointer; position: relative;" onclick="toggleProfileDropdown()">
-        <span style="font-size: 18px;">👤</span>
-        <span id="profileUserName" style="font-size: 13px; font-weight: 500;">Бьюти</span>
-        
-        <div id="profileDropdown" style="display: none; position: absolute; top: 35px; right: 0; background: white; border: 1px solid #FFF0F5; padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); width: 220px; z-index: 1005;">
-          <p style="font-size: 12px; color: #777; margin-bottom: 5px;">Ваш статус:</p>
-          <strong id="userStatusBadge" style="color: #ff0055; font-size: 14px; display: block; margin-bottom: 10px;">👑 VIP-Бурмалда</strong>
-          <hr style="border: 0; border-top: 1px solid #FFF0F5; margin-bottom: 10px;">
-          <button onclick="logoutUser(event)" style="background: none; border: none; color: #ff6961; font-size: 12px; cursor: pointer; padding: 0;">Выйти из профиля</button>
-        </div>
-      </div>
-    </div>
-
     <div class="cart-icon" onclick="toggleCart()">
       🛒 <span class="cart-count">0</span>
     </div>
   </header>
-
-  <div class="modal-overlay" id="authModal" style="z-index: 2010;">
-    <div class="order-modal-box" style="max-width: 380px;">
-      <span class="close-modal" onclick="closeAuthModal()">&times;</span>
-      <h3 style="margin-bottom: 5px;">Создание профиля</h3>
-      <p class="modal-subtitle">Зарегистрируйтесь, чтобы копить бонусы</p>
-      <form onsubmit="loginUser(event)">
-        <div class="form-group" style="margin-bottom: 12px;">
-          <label>Ваше Имя</label>
-          <input type="text" id="authNameInput" placeholder="Как к вам обращаться?" required style="margin-bottom: 0;">
-        </div>
-        <div class="form-group" style="margin-bottom: 20px;">
-          <label>Номер телефона</label>
-          <input type="tel" id="authPhoneInput" placeholder="+7 (999) 000-00-00" required style="margin-bottom: 0;">
-        </div>
-        <button type="submit" class="btn-submit" style="background: #F7A8D2;">Создать профиль</button>
-      </form>
-    </div>
-  </div>
 
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h3>Ваша корзина</h3>
       <span class="close-cart" onclick="toggleCart()">&times;</span>
     </div>
-    
-    <div class="bonus-account-box" style="background: linear-gradient(45deg, #FFF0F5, #FFF); padding: 12px; margin: 15px 0 0; border-radius: 10px; border: 1px dashed #F7A8D2; text-align: center; font-size: 14px;">
-      ✨ Ваш balance: <strong id="userBonusBalance">0</strong> бьюти-баллов
-    </div>
-
     <div class="cart-body" id="cartBody">
       <p class="empty-cart-msg">Корзина пока пуста</p>
     </div>
-    
     <div class="cart-footer">
-      <div id="spendBonusSection" style="display: none; margin-bottom: 12px; justify-content: space-between; align-items: center;">
-        <span style="font-size: 13px; color: #555;">Доступно баллов для списания:</span>
-        <button onclick="spendBonusPoints()" style="padding: 5px 10px; background: #333; color: white; border: none; border-radius: 15px; font-size: 12px; cursor: pointer;">Списать всё</button>
-      </div>
-      <div id="bonusAppliedMessage" style="font-size: 12px; color: #00aa50; margin-bottom: 10px; display: none; font-weight: 500;"></div>
-      
       <div class="total-price">Итого: <span id="cartTotal">0</span> ₽</div>
-      <small style="display:block; color: #777; margin-bottom: 10px; font-size: 11px;" id="pendingBonusInfo">+0 баллов будет начислено</small>
       <button class="btn-checkout" onclick="openOrderModal()">Оформить заказ</button>
     </div>
   </div>
-  <!-- МОДАЛЬНОЕ ОКНО ОФОРМЛЕНИЯ ЗАКАЗА -->
+
   <div class="modal-overlay" id="orderModal">
     <div class="order-modal-box">
       <span class="close-modal" onclick="closeOrderModal()">&times;</span>
@@ -139,6 +84,14 @@
     </div>
   </div>
 
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Чистая эстетика твоей кожи</h1>
+      <p>Органическая косметика AURA. Создана, чтобы подчеркнуть твою естественную нежность и заботу в каждом прикосновении.</p>
+      <a href="#catalog" class="btn">Перейти к покупкам</a>
+    </div>
+  </section>
+
   <section id="about" class="about-section">
     <div class="container">
       <div class="about-grid">
@@ -152,7 +105,7 @@
           </ul>
         </div>
         <div class="about-image">
-          <img src="trf.png" alt="О бренде" class="aesthetic-img">
+          <img src="https://ibb.co" alt="О бренде" class="aesthetic-img">
         </div>
       </div>
     </div>
@@ -169,117 +122,129 @@
       <div class="products-grid">
         
         <div class="product-card" data-category="face">
-          <div class="product-img-box">
-            <span class="badge">Топ</span>
-            <img src="rose.jpg" alt="Пенка с экстрактом розы">
-          </div>
-          <div class="product-info">
-            <h3>Пенка с экстрактом розы</h3>
-            <p class="prod-desc">Мягко очищает кожу, сохраняя естественный гидролипидный баланс.</p>
-            <p class="price">1 200 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Пенка с экстрактом розы', 1200)">В корзину</button>
-          </div>
-        </div>
+  <div class="product-img-box">
+    <span class="badge">Топ</span>
+   <img src="rose.jpg" alt="Пенка с экстрактом розы">
+  </div>
+  <div class="product-info">
+    <h3>Пенка с экстрактом розы</h3>
+    <p class="prod-desc">Мягко очищает кожу, сохраняя естественный гидролипидный баланс.</p>
+    <p class="price">1 200 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Пенка с экстрактом розы', 1200)">В корзину</button>
+  </div>
+</div>
+
+
 
         <div class="product-card" data-category="face">
-          <div class="product-img-box">
-            <img src="tonik.jpg.png" alt="Тоник Soft Touch">
-          </div>
-          <div class="product-info">
-            <h3>Тоник Soft Touch</h3>
-            <p class="prod-desc">Мгновенно насыщает клетки влагой и выравнивает тон лица.</p>
-            <p class="price">950 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Тоник Soft Touch', 950)">В корзину</button>
-          </div>
-        </div>
+  <div class="product-img-box">
+    <!-- Указываем точное имя файла, который загрузили на GitHub -->
+    <img src="tonik.jpg.png" alt="Тоник Soft Touch">
+  </div>
+  <div class="product-info">
+    <h3>Тоник Soft Touch</h3>
+    <p class="prod-desc">Мгновенно насыщает клетки влагой и выравнивает тон лица.</p>
+    <p class="price">950 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Тоник Soft Touch', 950)">В корзину</button>
+  </div>
+</div>
+
 
         <div class="product-card" data-category="face">
-          <div class="product-img-box">
-            <span class="badge">New</span>
-            <img src="vitamin-c.jpg.png" alt="Сыворотка с витамином C">
-          </div>
-          <div class="product-info">
-            <h3>Сыворотка с витамином C</h3>
-            <p class="prod-desc">Мощный антиоксидантный заряд для возвращения природного сияния.</p>
-            <p class="price">1 850 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Сыворотка с витамином C', 1850)">В корзину</button>
-          </div>
-        </div>
-        <div class="product-card" data-category="body">
-          <div class="product-img-box">
-            <span class="badge">Топ</span>
-            <img src="coconut-scrub.jpg" alt="Кокосовый скраб для тела">
-          </div>
-          <div class="product-info">
-            <h3>Кокосовый скраб для тела</h3>
-            <p class="prod-desc">Бережно отшелушивает и делает кожу шелковистой и мягкой.</p>
-            <p class="price">1 400 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Кокосовый скраб для тела', 1400)">В корзину</button>
-          </div>
-        </div>
+  <div class="product-img-box">
+    <span class="badge">New</span>
+    <!-- Прописываем точное имя файла, сохраненного на GitHub -->
+    <img src="vitamin-c.jpg.png" alt="Сыворотка с витамином C">
+  </div>
+  <div class="product-info">
+    <h3>Сыворотка с витамином C</h3>
+    <p class="prod-desc">Мощный антиоксидантный заряд для возвращения природного сияния.</p>
+    <p class="price">1 850 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Сыворотка с витамином C', 1850)">В корзину</button>
+  </div>
+</div>
 
-        <div class="product-card" data-category="face">
-          <div class="product-img-box">
-            <span class="badge">Хит</span>
-            <img src="https://unsplash.com" alt="Увлажняющий крем">
-          </div>
-          <div class="product-info">
-            <h3>Увлажняющий крем-флюид</h3>
-            <p class="prod-desc">Легкая текстура глубоко питает кожу и дарит ощущение свежести на весь день.</p>
-            <p class="price">1 150 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Увлажняющий крем-флюид', 1150)">В корзину</button>
-          </div>
-        </div>
 
-        <div class="product-card" data-category="face">
-          <div class="product-img-box">
-            <img src="https://unsplash.com" alt="Гидрофильное масло">
-          </div>
-          <div class="product-info">
-            <h3>Гидрофильное масло Aura</h3>
-            <p class="prod-desc">Идеально растворяет даже самый стойкий макияж и бережно очищает поры.</p>
-            <p class="price">1 350 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Гидрофильное масло Aura', 1350)">В корзину</button>
-          </div>
-        </div>
+       <div class="product-card" data-category="body">
+  <div class="product-img-box">
+    <span class="badge">Топ</span>
+    <!-- Прописываем точное название картинки скраба -->
+    <img src="coconut-scrub.jpg" alt="Кокосовый скраб для тела">
+  </div>
+  <div class="product-info">
+    <h3>Кокосовый скраб для тела</h3>
+    <p class="prod-desc">Бережно отшелушивает и делает кожу шелковистой и мягкой.</p>
+    <p class="price">1 400 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Кокосовый скраб для тела', 1400)">В корзину</button>
+  </div>
+</div>
+        <!-- ТОВАР 5: Крем для лица -->
+<div class="product-card" data-category="face">
+  <div class="product-img-box">
+    <span class="badge">Хит</span>
+    <img src="https://unsplash.com" alt="Увлажняющий крем">
+  </div>
+  <div class="product-info">
+    <h3>Увлажняющий крем-флюид</h3>
+    <p class="prod-desc">Легкая текстура глубоко питает кожу и дарит ощущение свежести на весь день.</p>
+    <p class="price">1 150 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Увлажняющий крем-флюид', 1150)">В корзину</button>
+  </div>
+</div>
 
-        <div class="product-card" data-category="body">
-          <div class="product-img-box">
-            <span class="badge">New</span>
-            <img src="https://unsplash.com" alt="Лосьон для тела">
-          </div>
-          <div class="product-info">
-            <h3>Парфюмированный лосьон</h3>
-            <p class="prod-desc">Тающая текстура с ароматом ванили интенсивно смягчает кожу тела.</p>
-            <p class="price">1 600 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Парфюмированный лосьон', 1600)">В корзину</button>
-          </div>
-        </div>
+<!-- ТОВАР 6: Гидрофильное масло -->
+<div class="product-card" data-category="face">
+  <div class="product-img-box">
+    <img src="https://unsplash.com" alt="Гидрофильное масло">
+  </div>
+  <div class="product-info">
+    <h3>Гидрофильное масло Aura</h3>
+    <p class="prod-desc">Идеально растворяет даже самый стойкий макияж и бережно очищает поры.</p>
+    <p class="price">1 350 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Гидрофильное масло Aura', 1350)">В корзину</button>
+  </div>
+</div>
 
-        <div class="product-card" data-category="face">
-          <div class="product-img-box">
-            <img src="https://unsplash.com" alt="Ночная маска">
-          </div>
-          <div class="product-info">
-            <h3>Ночная восстанавливающая маска</h3>
-            <p class="prod-desc">Стирает следы усталости, пока вы спите, возвращая коже отдохнувший вид.</p>
-            <p class="price">1 100 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Ночная восстанавливающая маска', 1100)">В корзину</button>
-          </div>
-        </div>
+<!-- ТОВАР 7: Лосьон для тела -->
+<div class="product-card" data-category="body">
+  <div class="product-img-box">
+    <span class="badge">New</span>
+    <img src="https://unsplash.com" alt="Лосьон для тела">
+  </div>
+  <div class="product-info">
+    <h3>Парфюмированный лосьон</h3>
+    <p class="prod-desc">Тающая текстура с ароматом ванили интенсивно смягчает кожу тела.</p>
+    <p class="price">1 600 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Парфюмированный лосьон', 1600)">В корзину</button>
+  </div>
+</div>
 
-        <div class="product-card" data-category="body" style="border: 2px solid #ff0055; position: relative;">
-          <div class="product-img-box">
-            <span class="badge" style="background: #ff0055; color: #fff; font-weight: bold;">КОЛЛАБА</span>
-            <img src="MELL.png" alt="Бокс БУРМАЛДА">
-          </div>
-          <div class="product-info">
-            <h3 style="color: #ff0055;">🔥 БОКС «БУРМАЛДА»</h3>
-            <p class="prod-desc"><strong>Эксклюзивный набор!</strong> Внутри: Тоник Soft Touch, Сыворотка с витамином C и Кокосовый скраб.</p>
-            <p class="price"><span style="text-decoration: line-through; color: #888; font-size: 0.9rem; margin-right: 5px;">4 200 ₽</span> 2 990 ₽</p>
-            <button class="btn-buy" onclick="addToCart('Бокс БУРМАЛДА', 2990)" style="background: linear-gradient(45deg, #ff0055, #7a00ff); color: white; border: none;">Забрать бокс</button>
-          </div>
+<!-- ТОВАР 8: Маска для лица -->
+<div class="product-card" data-category="face">
+  <div class="product-img-box">
+    <img src="https://unsplash.com" alt="Ночная маска">
+  </div>
+  <div class="product-info">
+    <h3>Ночная восстанавливающая маска</h3>
+    <p class="prod-desc">Стирает следы усталости, пока вы спите, возвращая коже отдохнувший вид.</p>
+    <p class="price">1 100 ₽</p>
+    <button class="btn-buy" onclick="addToCart('Ночная восстанавливающая маска', 1100)">В корзину</button>
+  </div>
+</div>
+<!-- ЭКСКЛЮЗИВ: БОКС «БУРМАЛДА» (КОЛЛАБА) -->
+      <div class="product-card" data-category="body" style="border: 2px solid #ff0055; position: relative;">
+        <div class="product-img-box">
+          <span class="badge" style="background: #ff0055; color: #fff; font-weight: bold;">КОЛЛАБА</span>
+          <img src="MELL.png" alt="Бокс БУРМАЛДА">
         </div>
+        <div class="product-info">
+          <h3 style="color: #ff0055;">🔥 БОКС «БУРМАЛДА»</h3>
+          <p class="prod-desc"><strong>Эксклюзивный набор!</strong> Внутри: Тоник Soft Touch, Сыворотка с витамином C и Кокосовый скраб.</p>
+          <p class="price"><span style="text-decoration: line-through; color: #888; font-size: 0.9rem; margin-right: 5px;">4 200 ₽</span> 2 990 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Бокс БУРМАЛДА', 2990)" style="background: linear-gradient(45deg, #ff0055, #7a00ff); color: white; border: none;">Забрать бокс</button>
+        </div>
+      </div>
+
 
       </div>
     </div>
@@ -306,11 +271,11 @@
       <h2 class="section-title">Частые вопросы</h2>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Подходит ли косметика для чувствительной кожи? <span>+</span></div>
-        <div class="faq-answer" style="display: none;">Да, все наши формулы гипоаллергенны и проходят тестирование.</div>
+        <div class="faq-answer">Да, все наши формулы гипоаллергенны и проходят тестирование.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
         <div class="faq-question">Каковы сроки доставки? <span>+</span></div>
-        <div class="faq-answer" style="display: none;">Доставка осуществляется по стране от 2 до 5 рабочих дней.</div>
+        <div class="faq-answer">Доставка осуществляется по стране от 2 до 5 рабочих дней.</div>
       </div>
     </div>
   </section>
@@ -324,7 +289,7 @@
         <div class="form-group"><textarea rows="4" placeholder="Ваш вопрос" required></textarea></div>
         <button type="submit" class="btn-submit">Отправить сообщение</button>
       </form>
-      <div id="formSuccess" class="success-message" style="display: none;">Спасибо! Мы скоро свяжемся с вами. 💕</div>
+      <div id="formSuccess" class="success-message">Спасибо! Мы скоро свяжемся с вами. 💕</div>
     </div>
   </section>
 
@@ -338,9 +303,6 @@
     <div class="footer-bottom"><p>&copy; 2026 AURA. Все права защищены.</p></div>
   </footer>
 
-  <script src="./app.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
-
-
-
