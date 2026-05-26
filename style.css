@@ -125,3 +125,63 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
 
 .petal{position:fixed;top:-10px;color:#FFF0F5;font-size:20px;user-select:none;pointer-events:none;z-index:1002;animation:fall linear}
 @keyframes fall{to{transform:translateY(105vh) rotate(360deg)}}
+/* АДАПТИВ ДЛЯ МОБИЛЬНЫХ ТЕЛЕФОНОВ (ЭКРАНЫ МЕНЕЕ 768px) */
+@media (max-width: 768px) {
+    /* 1. Делаем прозрачные отступы по бокам сайта, чтобы видеть розы */
+    .container {
+        padding: 0 12px !important;
+    }
+    
+    /* 2. Перестраиваем каталог: 2 компактные карточки в один ряд */
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important; /* Уменьшаем расстояние между ними */
+    }
+    
+    /* 3. Уменьшаем высоту картинок внутри карточек, чтобы они не были огромными */
+    .product-img-box {
+        height: 160px !important;
+    }
+    
+    /* 4. Делаем тексты и цены чуть компактнее для мобильного экрана */
+    .product-info {
+        padding: 10px !important;
+    }
+    .product-info h3 {
+        font-size: 14px !important;
+        line-height: 1.2;
+    }
+    .prod-desc {
+        font-size: 11px !important;
+        margin-bottom: 8px !important;
+    }
+    .price {
+        font-size: 15px !important;
+        margin-bottom: 8px !important;
+    }
+    .btn-buy {
+        padding: 8px 0 !important;
+        font-size: 12px !important;
+    }
+    
+    /* 5. Делаем секцию философии «О бренде» в одну колонку, чтобы текст не сжимался */
+    .about-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .aesthetic-img {
+        height: 250px !important; /* Картинка текстуры тоже станет аккуратнее */
+    }
+    
+    /* 6. Отзывы тоже делаем в одну колонку */
+    .reviews-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    /* Спец-настройка для VIP-бокса БУРМАЛДА на мобилках */
+    .product-card[style*="border: 3px solid"] {
+        transform: scale(1) !important; /* Убираем увеличение, чтобы не ломать сетку */
+    }
+}
+
