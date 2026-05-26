@@ -303,8 +303,7 @@ function filterCategory(category, buttonElement) {
   buttons.forEach(btn => btn.classList.remove('active'));
   if (buttonElement) buttonElement.classList.add('active');
 // Специальная функция для моментальной покупки бокса с главного баннера
-function buyBurmaldaImmediately() {
-  addToCart('Бокс БУРМАЛДА', 2990);
+
   
   // Автоматически открываем корзину, чтобы пользователь сразу увидел товар и баллы
   const sidebar = document.getElementById('cartSidebar');
