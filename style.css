@@ -8,7 +8,7 @@ body {
     overflow-x: hidden;
     
     /* ЭФФЕКТ НЕЖНОЙ ВУАЛИ: Накладываем прозрачный белый цвет (opacity 85%) поверх картинки роз */
-    background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
+    background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.75)), 
                 url(rose.ui.png);
                 
     background-repeat: no-repeat;         
