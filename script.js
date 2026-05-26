@@ -302,6 +302,16 @@ function filterCategory(category, buttonElement) {
   const buttons = document.querySelectorAll('.filter-btn');
   buttons.forEach(btn => btn.classList.remove('active'));
   if (buttonElement) buttonElement.classList.add('active');
+// Специальная функция для моментальной покупки бокса с главного баннера
+function buyBurmaldaImmediately() {
+  addToCart('Бокс БУРМАЛДА', 2990);
+  
+  // Автоматически открываем корзину, чтобы пользователь сразу увидел товар и баллы
+  const sidebar = document.getElementById('cartSidebar');
+  if (sidebar && !sidebar.classList.contains('active')) {
+    sidebar.classList.add('active');
+  }
+}
 
   cards.forEach(card => {
 if (category === 'all' || card.getAttribute('data-category') === category) {card.style.display = 'flex';} else {card.style.display = 'none';}});}function toggleFaq(element) {const answer = element.querySelector('.faq-answer');const span = element.querySelector('.faq-question span');if (!answer || !span) return;if (answer.style.display === 'block') {answer.style.display = 'none';span.innerText = '+';} else {answer.style.display = 'block';span.innerText = '−';}}function handleFormSubmit(event) {event.preventDefault();const form = document.getElementById('contactForm');const success = document.getElementById('formSuccess');if (form && success) {form.style.display = 'none';success.style.display = 'block';}}
