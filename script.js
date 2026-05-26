@@ -2,9 +2,11 @@ let cart = [];
 let total = 0;
 let discountApplied = false;
 
+// Добавили промокод MELLSTROY в общий список со скидкой 20% (0.20)
 const PROMO_CODES = {
   "AURA10": 0.10,
-  "BEAUTY20": 0.20
+  "BEAUTY20": 0.20,
+  "MELLSTROY": 0.20
 };
 
 // Функция живых лепестков на фоне
@@ -105,8 +107,15 @@ function applyPromoCode() {
     const newTotal = total * (1 - discount);
     modalTotal.innerText = Math.round(newTotal).toLocaleString();
     discountApplied = true;
-    pMsg.style.color = '#77dd77';
-    pMsg.innerText = `Успешно! Скидка ${discount * 100}% активирована.`;
+    
+    // Специальное кастомное сообщение для промокода Мелстроя
+    if (code === 'MELLSTROY') {
+      pMsg.style.color = '#77dd77';
+      pMsg.innerText = '🔥 Коллаба с Мелстроем! Скидка 20% успешно применилась!';
+    } else {
+      pMsg.style.color = '#77dd77';
+      pMsg.innerText = `Успешно! Скидка ${discount * 100}% активирована.`;
+    }
   } else {
     pMsg.style.color = '#ff6961';
     pMsg.innerText = 'Неверный или истекший промокод.';
@@ -122,7 +131,16 @@ function submitOrder(event) {
   event.preventDefault();
   const modalTotal = document.getElementById('modalTotalPrice');
   const finalPrice = modalTotal ? modalTotal.innerText : total.toLocaleString();
-  alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. Команда бренда AURA уже бережно собирает вашу посылку.`);
+  
+  // Проверяем, есть ли в корзине бокс Бурмалда
+  const hasBurmalda = cart.some(item => item.name === 'Бокс БУРМАЛДА');
+  
+  if (hasBurmalda) {
+    alert(`🎉 Заказ на сумму ${finalPrice} ₽ успешно оформлен! БУРМАЛДА АКТИВИРОВАНА! ⚡ Мелстрой гордится вами.`);
+  } else {
+    alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. Команда бренда AURA уже бережно собирает вашу посылку.`);
+  }
+  
   cart = [];
   updateCart();
   closeOrderModal();
@@ -165,4 +183,5 @@ function handleFormSubmit(event) {
     success.style.display = 'block';
   }
 }
+
 
