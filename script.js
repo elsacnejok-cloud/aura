@@ -5,7 +5,7 @@ let discountApplied = false;
 // Бонусная система и Профиль
 let userBonusPoints = parseInt(localStorage.getItem('aura_bonus_points')) || 0;
 let bonusSpentThisOrder = 0;
-let currentUser = JSON.parse(localStorage.getItem('aura_user')) || null; // Храним данные пользователя
+let currentUser = JSON.parse(localStorage.getItem('aura_user')) || null;
 
 const PROMO_CODES = {
   "AURA10": 0.10,
@@ -56,7 +56,7 @@ function loginUser(event) {
 }
 
 function logoutUser(event) {
-  event.stopPropagation(); // Чтобы меню не закрывалось-открывалось обратно
+  event.stopPropagation();
   localStorage.removeItem('aura_user');
   currentUser = null;
   updateAuthUI();
@@ -91,7 +91,6 @@ function updateAuthUI() {
     profileBox.style.display = 'flex';
     profileName.innerText = currentUser.name;
     
-    // Рассчитываем ранг в зависимости от баллов
     if (userBonusPoints >= 3000) {
       statusBadge.innerText = '👑 VIP-Бурмалда';
       statusBadge.style.color = '#ff0055';
@@ -107,8 +106,8 @@ function updateAuthUI() {
     profileBox.style.display = 'none';
   }
 }
-/* ------------------------ */
 
+/* --- КОРЗИНА --- */
 function toggleCart() {
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.toggle('active');
@@ -204,6 +203,7 @@ function spendBonusPoints() {
   updateCart();
 }
 
+/* --- ОКНО ЗАКАЗА И ПРОМОКОДЫ --- */
 function openOrderModal() {
   if (cart.length === 0) return alert('Ваша корзина пуста!');
   toggleCart();
@@ -214,7 +214,6 @@ function openOrderModal() {
   if (pInput) pInput.value = '';
   if (pMsg) pMsg.innerText = '';
   
-  // Автоподстановка данных, если профиль создан
   const formInputs = document.querySelectorAll('#checkoutForm input');
   if (currentUser && formInputs.length >= 2) {
     formInputs[0].value = currentUser.name;
@@ -229,11 +228,6 @@ function openOrderModal() {
     modalTotal.innerText = finalModalPrice.toLocaleString();
     modal.classList.add('active');
   }
-}
-
-function closeOrderModal() {
-  const modal = document.getElementById('orderModal');
-  if (modal) modal.classList.remove('active');
 }
 
 function applyPromoCode() {
@@ -271,22 +265,18 @@ function applyPromoCode() {
   }
 }
 
-/* --- НОВЫЕ ИСПРАВЛЕННЫЕ ФУНКЦИИ --- */
-
-// Подтверждение и отправка заказа
 function submitOrder(event) {
   event.preventDefault();
   alert('✨ Заказ успешно оформлен! Спасибо, что выбираете AURA.');
-  
   cart = [];
   bonusSpentThisOrder = 0;
   discountApplied = false;
-  
-  closeOrderModal();
+  const modal = document.getElementById('orderModal');
+  if (modal) modal.classList.remove('active');
   updateCart();
 }
 
-// Переключение категорий в каталоге
+/* --- ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ (ФИЛЬТРЫ, FAQ, ФОРМА) --- */
 function filterCategory(category, buttonElement) {
   const buttons = document.querySelectorAll('.filter-btn');
   buttons.forEach(btn => btn.classList.remove('active'));
@@ -303,7 +293,24 @@ function filterCategory(category, buttonElement) {
   });
 }
 
-// Раскрытие вопросов в FAQ
 function toggleFaq(element) {
   element.classList.toggle('active');
   const answer = element.querySelector('.faq-answer');
+  const span = element.querySelector('.faq-question span');
+  
+  if (element.classList.contains('active')) {
+    if (answer) answer.style.display = 'block';
+    if (span) span.innerText = '−';
+  } else {
+    if (answer) answer.style.display = 'none';
+    if (span) span.innerText = '+';
+  }
+}
+
+function handleFormSubmit(event) {
+  event.preventDefault();
+  const successMessage = document.getElementById('formSuccess');
+  if (successMessage) successMessage.style.display = 'block';
+  const form = document.getElementById('contactForm');
+  if (form) form.reset();
+}
