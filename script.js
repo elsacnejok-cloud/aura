@@ -2,11 +2,11 @@ let cart = [];
 let total = 0;
 let discountApplied = false;
 
-// Бонусная система
-let userBonusPoints = parseInt(localStorage.getItem('aura_bonus_points')) || 0; // Загружаем баллы из памяти
-let bonusSpentThisOrder = 0; // Сколько баллов списываем в текущем заказе
+// Бонусная система и Профиль
+let userBonusPoints = parseInt(localStorage.getItem('aura_bonus_points')) || 0;
+let bonusSpentThisOrder = 0;
+let currentUser = JSON.parse(localStorage.getItem('aura_user')) || null; // Храним данные пользователя
 
-// Добавили промокод MELLSTROY в общий список со скидкой 20%
 const PROMO_CODES = {
   "AURA10": 0.10,
   "BEAUTY20": 0.20,
@@ -26,10 +26,92 @@ function createPetal() {
 }
 setInterval(createPetal, 4000);
 
+// Инициализация при загрузке страницы
+window.onload = function() {
+  updateAuthUI();
+  updateCart();
+};
+
+/* --- СИСТЕМА ПРОФИЛЯ --- */
+function openAuthModal() {
+  const modal = document.getElementById('authModal');
+  if (modal) modal.classList.add('active');
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('authModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function loginUser(event) {
+  event.preventDefault();
+  const name = document.getElementById('authNameInput').value.trim();
+  const phone = document.getElementById('authPhoneInput').value.trim();
+  
+  currentUser = { name, phone };
+  localStorage.setItem('aura_user', JSON.stringify(currentUser));
+  
+  closeAuthModal();
+  updateAuthUI();
+}
+
+function logoutUser(event) {
+  event.stopPropagation(); // Чтобы меню не закрывалось-открывалось обратно
+  localStorage.removeItem('aura_user');
+  currentUser = null;
+  updateAuthUI();
+}
+
+function toggleProfileDropdown() {
+  const dropdown = document.getElementById('profileDropdown');
+  if (dropdown) {
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+}
+
+// Скрывать выпадающее меню при клике в любое другое место сайта
+window.addEventListener('click', function(e) {
+  const dropdown = document.getElementById('profileDropdown');
+  const profileBox = document.getElementById('userProfileBox');
+  if (dropdown && profileBox && !profileBox.contains(e.target)) {
+    dropdown.style.display = 'none';
+  }
+});
+
+function updateAuthUI() {
+  const authBtn = document.getElementById('authBtn');
+  const profileBox = document.getElementById('userProfileBox');
+  const profileName = document.getElementById('profileUserName');
+  const statusBadge = document.getElementById('userStatusBadge');
+  
+  if (!authBtn || !profileBox || !profileName) return;
+  
+  if (currentUser) {
+    authBtn.style.display = 'none';
+    profileBox.style.display = 'flex';
+    profileName.innerText = currentUser.name;
+    
+    // Рассчитываем ранг в зависимости от баллов
+    if (userBonusPoints >= 3000) {
+      statusBadge.innerText = '👑 VIP-Бурмалда';
+      statusBadge.style.color = '#ff0055';
+    } else if (userBonusPoints >= 1000) {
+      statusBadge.innerText = '✨ Бьюти-Эксперт';
+      statusBadge.style.color = '#7a00ff';
+    } else {
+      statusBadge.innerText = '🌱 Ценитель Эстетики';
+      statusBadge.style.color = '#333';
+    }
+  } else {
+    authBtn.style.display = 'block';
+    profileBox.style.display = 'none';
+  }
+}
+/* ------------------------ */
+
 function toggleCart() {
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.toggle('active');
-  // При открытии корзины обновляем баланс баллов на экране
   if (sidebar && sidebar.classList.contains('active')) {
     updateBonusUI();
   }
@@ -37,10 +119,9 @@ function toggleCart() {
 
 function addToCart(name, price) {
   cart.push({ name, price });
-  // Сбрасываем списание баллов при изменении корзины, чтобы пересчитать честно
   bonusSpentThisOrder = 0; 
-  document.getElementById('bonusAppliedMessage').style.display = 'none';
-  
+  const bMsg = document.getElementById('bonusAppliedMessage');
+  if (bMsg) bMsg.style.display = 'none';
   updateCart();
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.add('active');
@@ -48,8 +129,9 @@ function addToCart(name, price) {
 
 function removeFromCart(index) {
   cart.splice(index, 1);
-  bonusSpentThisOrder = 0; // Сбрасываем бонусы
-  document.getElementById('bonusAppliedMessage').style.display = 'none';
+  bonusSpentThisOrder = 0;
+  const bMsg = document.getElementById('bonusAppliedMessage');
+  if (bMsg) bMsg.style.display = 'none';
   updateCart();
 }
 
@@ -84,14 +166,12 @@ function updateCart() {
       cartBody.appendChild(itemEl);
     });
     
-    // Считаем кэшбэк 10% от текущей корзины
     if (pendingBonusInfo) {
       let potentialCashback = Math.floor(total * 0.10);
       pendingBonusInfo.innerText = `+${potentialCashback} баллов будет начислено после заказа`;
     }
   }
   
-  // Рассчитываем итоговую цену в корзине с учетом списанных баллов
   let finalCartTotal = total - bonusSpentThisOrder;
   if (finalCartTotal < 0) finalCartTotal = 0;
   cartTotal.innerText = finalCartTotal.toLocaleString();
@@ -99,14 +179,11 @@ function updateCart() {
   updateBonusUI();
 }
 
-// Функция обновления интерфейса баллов
 function updateBonusUI() {
   const balanceEl = document.getElementById('userBonusBalance');
   const spendSection = document.getElementById('spendBonusSection');
-  
   if (balanceEl) balanceEl.innerText = userBonusPoints;
   
-  // Показываем кнопку «Списать», только если у юзера есть баллы и в корзине что-то лежит
   if (spendSection) {
     if (userBonusPoints > 0 && cart.length > 0 && bonusSpentThisOrder === 0) {
       spendSection.style.display = 'flex';
@@ -116,23 +193,14 @@ function updateBonusUI() {
   }
 }
 
-// Кнопка списания баллов
 function spendBonusPoints() {
   if (userBonusPoints === 0 || total === 0) return;
-  
-  // Нельзя оплатить баллами больше, чем стоит сам заказ
-  if (userBonusPoints >= total) {
-    bonusSpentThisOrder = total;
-  } else {
-    bonusSpentThisOrder = userBonusPoints;
-  }
-  
+  bonusSpentThisOrder = userBonusPoints >= total ? total : userBonusPoints;
   const appliedMsg = document.getElementById('bonusAppliedMessage');
   if (appliedMsg) {
     appliedMsg.style.display = 'block';
     appliedMsg.innerText = `📉 Списано ${bonusSpentThisOrder} баллов в счет оплаты!`;
   }
-  
   updateCart();
 }
 
@@ -146,13 +214,18 @@ function openOrderModal() {
   if (pInput) pInput.value = '';
   if (pMsg) pMsg.innerText = '';
   
+  // Автоподстановка данных, если профиль создан
+  const formInputs = document.querySelectorAll('#checkoutForm input');
+  if (currentUser && formInputs.length >= 2) {
+    formInputs[0].value = currentUser.name;
+    formInputs[1].value = currentUser.phone;
+  }
+  
   const modal = document.getElementById('orderModal');
   const modalTotal = document.getElementById('modalTotalPrice');
   if (modal && modalTotal) {
-    // Цена в модалке учитывает промокод И списанные бонусы
     let finalModalPrice = total - bonusSpentThisOrder;
     if (finalModalPrice < 0) finalModalPrice = 0;
-    
     modalTotal.innerText = finalModalPrice.toLocaleString();
     modal.classList.add('active');
   }
@@ -173,8 +246,6 @@ function applyPromoCode() {
   const code = pInput.value.trim().toUpperCase();
   if (PROMO_CODES[code]) {
     const discount = PROMO_CODES[code];
-    
-    // Промокод применяется к цене ПОСЛЕ вычета бонусов
     let basePrice = total - bonusSpentThisOrder;
     if (basePrice < 0) basePrice = 0;
     
@@ -204,16 +275,11 @@ function submitOrder(event) {
   event.preventDefault();
   const modalTotal = document.getElementById('modalTotalPrice');
   const finalPrice = modalTotal ? modalTotal.innerText : total.toLocaleString();
-  
-  // Проверяем, есть ли в корзине бокс Бурмалда
   const hasBurmalda = cart.some(item => item.name === 'Бокс БУРМАЛДА');
   
-  // Начисляем новые баллы за покупку (10% от чистой стоимости товаров)
   let earnedPoints = Math.floor(total * 0.10);
-  
-  // Вычитаем списанные баллы и добавляем заработанные
   userBonusPoints = userBonusPoints - bonusSpentThisOrder + earnedPoints;
-  localStorage.setItem('aura_bonus_points', userBonusPoints); // Сохраняем в память
+  localStorage.setItem('aura_bonus_points', userBonusPoints);
   
   if (hasBurmalda) {
     alert(`🎉 Заказ на сумму ${finalPrice} ₽ успешно оформлен! БУРМАЛДА АКТИВИРОВАНА! ⚡ Вы получили +${earnedPoints} бьюти-баллов!`);
@@ -221,11 +287,13 @@ function submitOrder(event) {
     alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. На ваш баланс начислено +${earnedPoints} баллов!`);
   }
   
-  // Сбрасываем корзину
   cart = [];
   bonusSpentThisOrder = 0;
-  document.getElementById('bonusAppliedMessage').style.display = 'none';
+  const bMsg = document.getElementById('bonusAppliedMessage');
+  if (bMsg) bMsg.style.display = 'none';
+  
   updateCart();
+  updateAuthUI(); // Обновляем ранг в профиле, если баллы выросли
   closeOrderModal();
 }
 
@@ -236,35 +304,5 @@ function filterCategory(category, buttonElement) {
   if (buttonElement) buttonElement.classList.add('active');
 
   cards.forEach(card => {
-    if (category === 'all' || card.getAttribute('data-category') === category) {
-      card.style.display = 'flex';
-    } else {
-      card.style.display = 'none';
-    }
-  });
-}
-
-function toggleFaq(element) {
-  const answer = element.querySelector('.faq-answer');
-  const span = element.querySelector('.faq-question span');
-  if (!answer || !span) return;
-  if (answer.style.display === 'block') {
-    answer.style.display = 'none';
-    span.innerText = '+';
-  } else {
-    answer.style.display = 'block';
-    span.innerText = '−';
-  }
-}
-
-function handleFormSubmit(event) {
-  event.preventDefault();
-  const form = document.getElementById('contactForm');
-  const success = document.getElementById('formSuccess');
-  if (form && success) {
-    form.style.display = 'none';
-    success.style.display = 'block';
-  }
-}
-
+if (category === 'all' || card.getAttribute('data-category') === category) {card.style.display = 'flex';} else {card.style.display = 'none';}});}function toggleFaq(element) {const answer = element.querySelector('.faq-answer');const span = element.querySelector('.faq-question span');if (!answer || !span) return;if (answer.style.display === 'block') {answer.style.display = 'none';span.innerText = '+';} else {answer.style.display = 'block';span.innerText = '−';}}function handleFormSubmit(event) {event.preventDefault();const form = document.getElementById('contactForm');const success = document.getElementById('formSuccess');if (form && success) {form.style.display = 'none';success.style.display = 'block';}}
 
