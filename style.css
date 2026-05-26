@@ -100,4 +100,82 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
 .petal{position:fixed;top:-10px;color:#FFF0F5;font-size:20px;user-select:none;pointer-events:none;z-index:1002;animation:fall linear}
 @keyframes fall{to{transform:translateY(105vh) rotate(360deg)}}
 @media (max-width:768px){.navbar{padding:15px 20px}.nav-links{display:none}.hero-content h1{font-size:32px}.about-grid,.reviews-grid{grid-template-columns:1fr;gap:30px}.cart-sidebar{width:100%;right:-100%}.order-modal-box{padding:20px}}
+/* НОВЫЙ СТИЛЬНЫЙ БАННЕР МЕЛСТРОЯ С КНОПКОЙ */
+.mell-promo-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 100%);
+    border-bottom: 2px solid #ff0055; /* Сделаем рамку только снизу, чтобы смотрелось легче */
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.1);
+    padding: 8px 20px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+}
+
+.banner-avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ff0055;
+}
+
+.banner-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c2c2c;
+}
+
+.banner-text span {
+    color: #ff0055;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+/* КНОПКА НА БАННЕРЕ */
+.btn-banner-buy {
+    background: linear-gradient(45deg, #ff0055, #7a00ff);
+    color: white;
+    border: none;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 3px 10px rgba(255, 0, 85, 0.2);
+}
+
+.btn-banner-buy:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);
+}
+
+/* Сдвиг шапки (navbar) под высоту баннера */
+.navbar {
+    top: 58px !important; 
+}
+
+/* Адаптив под мобилки, чтобы на маленьком экране кнопка не улетала */
+@media (max-width: 768px) {
+    .mell-promo-banner {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+    }
+    .banner-text {
+        font-size: 11px;
+        text-align: center;
+    }
+    .navbar {
+        top: 85px !important; /* На мобилках баннер станет чуть выше, двигаем шапку */
+    }
+}
 
