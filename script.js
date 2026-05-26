@@ -69,7 +69,6 @@ function toggleProfileDropdown() {
   }
 }
 
-// Скрывать выпадающее меню при клике в любое другое место сайта
 window.addEventListener('click', function(e) {
   const dropdown = document.getElementById('profileDropdown');
   const profileBox = document.getElementById('userProfileBox');
@@ -230,6 +229,11 @@ function openOrderModal() {
   }
 }
 
+function closeOrderModal() {
+  const modal = document.getElementById('orderModal');
+  if (modal) modal.classList.remove('active');
+}
+
 function applyPromoCode() {
   const pInput = document.getElementById('promoInput');
   const pMsg = document.getElementById('promoMessage');
@@ -276,7 +280,7 @@ function submitOrder(event) {
   updateCart();
 }
 
-/* --- ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ (ФИЛЬТРЫ, FAQ, ФОРМА) --- */
+/* --- ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ --- */
 function filterCategory(category, buttonElement) {
   const buttons = document.querySelectorAll('.filter-btn');
   buttons.forEach(btn => btn.classList.remove('active'));
