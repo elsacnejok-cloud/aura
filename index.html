@@ -25,19 +25,35 @@
     </div>
   </header>
 
-  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h3>Ваша корзина</h3>
       <span class="close-cart" onclick="toggleCart()">&times;</span>
     </div>
+    
+    <!-- КРАСИВАЯ ПЛАШКА БОНУСНОГО БАЛАНСА -->
+    <div class="bonus-account-box" style="background: linear-gradient(45deg, #FFF0F5, #FFF); padding: 12px; margin: 15px 0 0; border-radius: 10px; border: 1px dashed #F7A8D2; text-align: center; font-size: 14px;">
+      ✨ Ваш баланс: <strong id="userBonusBalance">0</strong> бьюти-баллов
+    </div>
+
     <div class="cart-body" id="cartBody">
       <p class="empty-cart-msg">Корзина пока пуста</p>
     </div>
+    
     <div class="cart-footer">
+      <!-- Кнопка списания баллов -->
+      <div id="spendBonusSection" style="display: none; margin-bottom: 12px; justify-content: space-between; align-items: center;">
+        <span style="font-size: 13px; color: #555;">Доступно баллов для списания:</span>
+        <button onclick="spendBonusPoints()" style="padding: 5px 10px; background: #333; color: white; border: none; border-radius: 15px; font-size: 12px; cursor: pointer;">Списать всё</button>
+      </div>
+      <div id="bonusAppliedMessage" style="font-size: 12px; color: #00aa50; margin-bottom: 10px; display: none; font-weight: 500;"></div>
+      
       <div class="total-price">Итого: <span id="cartTotal">0</span> ₽</div>
+      <small style="display:block; color: #777; margin-bottom: 10px; font-size: 11px;" id="pendingBonusInfo">+0 баллов будет начислено</small>
       <button class="btn-checkout" onclick="openOrderModal()">Оформить заказ</button>
     </div>
   </div>
+
 
   <div class="modal-overlay" id="orderModal">
     <div class="order-modal-box">
