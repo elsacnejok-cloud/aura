@@ -213,12 +213,6 @@ function openOrderModal() {
   if (pInput) pInput.value = '';
   if (pMsg) pMsg.innerText = '';
   
-  const formInputs = document.querySelectorAll('#checkoutForm input');
-  if (currentUser && formInputs.length >= 2) {
-    formInputs[0].value = currentUser.name;
-    formInputs[1].value = currentUser.phone;
-  }
-  
   const modal = document.getElementById('orderModal');
   const modalTotal = document.getElementById('modalTotalPrice');
   if (modal && modalTotal) {
