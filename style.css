@@ -4,8 +4,8 @@ body{font-family: 'Montserrat', sans-serif;
     color: #333;
     line-height: 1.6;
     overflow-x: hidden;
-    background-image: url(Без названия215_20260526142542.png); /* Путь к картинке */
-    background-repeat: no-repeat;         /* Картинка не будет дублироваться */
+   background-image: url('Без названия215_20260526142542.png');
+  background-repeat: no-repeat;         /* Картинка не будет дублироваться */
     background-attachment: fixed;         /* Розы зафиксированы по бокам при скролле */
     background-position: center center;   /* Белая полоса строго по центру */
     background-size: cover;               /* Красиво растягивается под любой экран */}
