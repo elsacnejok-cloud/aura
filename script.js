@@ -255,63 +255,14 @@ function applyPromoCode() {
     
     if (code === 'MELLSTROY') {
       pMsg.style.color = '#77dd77';
-      pMsg.innerText = '🔥 Коллаба с Мелстроем! Скидка 20% успешно применилась!';
+      pMsg.innerText = '🔥 Коллаба с Мелстроем! Скидка 20% успешна!';
     } else {
       pMsg.style.color = '#77dd77';
-      pMsg.innerText = `Успешно! Скидка ${discount * 100}% активирована.`;
+      pMsg.innerText = `Промокод применен! Скидка ${discount * 100}%`;
     }
   } else {
     pMsg.style.color = '#ff6961';
-    pMsg.innerText = 'Неверный или истекший промокод.';
+    pMsg.innerText = 'Неверный промокод!';
   }
 }
-
-function closeOrderModal() {
-  const modal = document.getElementById('orderModal');
-  if (modal) modal.classList.remove('active');
-}
-
-function submitOrder(event) {
-  event.preventDefault();
-  const modalTotal = document.getElementById('modalTotalPrice');
-  const finalPrice = modalTotal ? modalTotal.innerText : total.toLocaleString();
-  const hasBurmalda = cart.some(item => item.name === 'Бокс БУРМАЛДА');
-  
-  let earnedPoints = Math.floor(total * 0.10);
-  userBonusPoints = userBonusPoints - bonusSpentThisOrder + earnedPoints;
-  localStorage.setItem('aura_bonus_points', userBonusPoints);
-  
-  if (hasBurmalda) {
-    alert(`🎉 Заказ на сумму ${finalPrice} ₽ успешно оформлен! БУРМАЛДА АКТИВИРОВАНА! ⚡ Вы получили +${earnedPoints} бьюти-баллов!`);
-  } else {
-    alert(`Прекрасно! Заказ на сумму ${finalPrice} ₽ успешно принят. На ваш баланс начислено +${earnedPoints} баллов!`);
-  }
-  
-  cart = [];
-  bonusSpentThisOrder = 0;
-  const bMsg = document.getElementById('bonusAppliedMessage');
-  if (bMsg) bMsg.style.display = 'none';
-  
-  updateCart();
-  updateAuthUI(); // Обновляем ранг в профиле, если баллы выросли
-  closeOrderModal();
-}
-
-function filterCategory(category, buttonElement) {
-  const cards = document.querySelectorAll('.product-card');
-  const buttons = document.querySelectorAll('.filter-btn');
-  buttons.forEach(btn => btn.classList.remove('active'));
-  if (buttonElement) buttonElement.classList.add('active');
-// Специальная функция для моментальной покупки бокса с главного баннера
-
-  
-  // Автоматически открываем корзину, чтобы пользователь сразу увидел товар и баллы
-  const sidebar = document.getElementById('cartSidebar');
-  if (sidebar && !sidebar.classList.contains('active')) {
-    sidebar.classList.add('active');
-  }
-}
-
-  cards.forEach(card => {
-if (category === 'all' || card.getAttribute('data-category') === category) {card.style.display = 'flex';} else {card.style.display = 'none';}});}function toggleFaq(element) {const answer = element.querySelector('.faq-answer');const span = element.querySelector('.faq-question span');if (!answer || !span) return;if (answer.style.display === 'block') {answer.style.display = 'none';span.innerText = '+';} else {answer.style.display = 'block';span.innerText = '−';}}function handleFormSubmit(event) {event.preventDefault();const form = document.getElementById('contactForm');const success = document.getElementById('formSuccess');if (form && success) {form.style.display = 'none';success.style.display = 'block';}}
 
