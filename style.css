@@ -184,3 +184,17 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
         transform: scale(1) !important; /* Убираем увеличение, чтобы не ломать сетку */
     }
 }
+/* Уменьшаем шапку на мобильных экранах (менее 768px) */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 15px !important; /* Делаем шапку узкой */
+    }
+    .logo {
+        font-size: 20px !important; /* Уменьшаем размер слова AURA */
+    }
+    .nav-links a {
+        margin: 0 6px !important; /* Сжимаем расстояние между ссылками */
+        font-size: 11px !important; /* Делаем шрифт ссылок чуть компактнее */
+    }
+}
+
