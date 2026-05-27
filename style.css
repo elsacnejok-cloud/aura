@@ -184,58 +184,41 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
         transform: scale(1) !important; /* Убираем увеличение, чтобы не ломать сетку */
     }
 }
-/* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ШАПКА С МИНИ-ЛОГОТИПОМ СЛЕВА */
+/* АККУРАТНАЯ МОБИЛЬНАЯ ШАПКА БЕЗ ИЗМЕНЕНИЯ HTML */
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column !important;
-        align-items: stretch !important;
         padding: 10px 15px !important;
-    }
-
-    /* Включаем контейнер ТОЛЬКО на мобилках */
-    .nav-top-row {
-        display: flex !important;
         justify-content: space-between !important;
-        align-items: center !important;
-        width: 100% !important;
-        margin-bottom: 12px !important;
     }
-    
-    /* Остальные твои мобильные стили пониже... */
-}
 
-
-    /* Сделали логотип еще меньше и сдвинули максимально налево */
+    /* Делаем логотип поменьше на телефонах */
     .logo {
-        font-size: 18px !important; 
-        letter-spacing: 1.5px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        text-align: left !important;
-    }
-
-    .cart-icon {
         font-size: 18px !important;
-        margin: 0 !important;
+        letter-spacing: 1px !important;
     }
 
-    /* Нижний ряд: Ссылки строго в одну линию */
+    /* Прячем длинное меню на мобилках в аккуратную прокрутку в одну строчку */
     .nav-links {
         display: flex !important;
-        justify-content: space-between !important; 
-        width: 100% !important;
-        overflow-x: auto !important; 
-        white-space: nowrap !important; 
+        gap: 10px !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        margin: 0 10px !important;
+        padding-bottom: 3px !important;
     }
 
     .nav-links a {
-        margin: 0 !important; 
-        padding: 6px 3px !important; 
-        font-size: 11px !important; /* Компактный размер для идеальной строчки */
+        margin: 0 !important;
+        font-size: 11px !important;
         font-weight: 600 !important;
-        text-transform: uppercase !important; 
-        letter-spacing: 0.5px !important;
+        text-transform: uppercase !important;
+    }
+
+    /* Корзина на мобилке */
+    .cart-icon {
+        font-size: 16px !important;
     }
 }
+
 
 
