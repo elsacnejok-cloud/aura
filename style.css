@@ -184,54 +184,59 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
         transform: scale(1) !important; /* Убираем увеличение, чтобы не ломать сетку */
     }
 }
-/* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ВЕРСИЯ: МИНИ-ЛОГОТИП НАВЕРХУ, КРУПНОЕ МЕНЮ СНИЗУ */
+/* ДВУХЭТАЖНАЯ КОМПАКТНАЯ МОБИЛЬНАЯ ШАПКА */
 @media (max-width: 768px) {
     .navbar {
-        /* Включаем режим двух строк на телефонах */
+        /* Разрешаем элементам переноситься на две строчки */
+        flex-direction: row !important;
         flex-wrap: wrap !important;
-        padding: 10px 15px !important;
-        gap: 12px 0 !important;
+        justify-content: center !important; /* Центрируем всё */
+        padding: 6px 10px !important; /* Минимальные отступы, чтобы поднять выше */
+        gap: 6px 0 !important; /* Маленькое расстояние между верхним и нижним рядом */
     }
 
-    /* 1. ЛОГОТИП: Делаем меньше, поднимаем наверх и прижимаем максимально налево */
+    /* 1. ЛОГОТИП: Строго на первой строчке по центру, аккуратный и небольшой */
     .logo {
-        font-size: 16px !important; /* Еще меньше и аккуратнее */
-        letter-spacing: 1.5px !important;
-        order: 1 !important; /* Жестко ставим на 1-е место в верхний ряд */
-        flex: 1 !important;
-        text-align: left !important;
+        font-size: 16px !important;
+        letter-spacing: 2px !important;
+        width: 100% !important; /* Занимает всю первую строчку */
+        text-align: center !important; /* Ровно по центру */
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    /* 2. КОРЗИНА: Ставим в верхний ряд направо */
-    .cart-icon {
-        font-size: 18px !important;
-        order: 2 !important; /* Жестко ставим на 2-е место в верхний ряд */
-        background: none !important;
-        border: none !important;
-    }
-
-    /* 3. НАВИГАЦИЯ: Спускаем на вторую строчку строго под логотип и корзину */
+    /* 2. НАВИГАЦИЯ: Строго на второй строчке, кнопки стали ближе друг к другу */
     .nav-links {
         display: flex !important;
-        order: 3 !important; /* Уходит на строчку ниже */
-        width: 100% !important; /* Занимает всю ширину под логотипом */
-        justify-content: space-between !important; /* Равномерно распределяем кнопки */
-        overflow-x: auto !important; /* Защита от вылетов на мелких экранах */
-        white-space: nowrap !important; /* Запрещаем перенос слов */
-        padding-top: 4px !important;
-        border-top: 1fr dashed #FFF0F5; /* Легкое незаметное разделение рядов */
+        justify-content: center !important; /* Центрируем ссылки */
+        align-items: center !important;
+        gap: 0 10px !important; /* Расстояние между кнопками */
+        width: auto !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
     }
 
-    /* 4. КНОПКИ МЕНЮ: Делаем их заметно больше и удобнее для пальцев */
+    /* КРУПНЫЕ СТИЛЬНЫЕ КНОПКИ */
     .nav-links a {
         margin: 0 !important;
-        padding: 8px 4px !important; /* Увеличили зону нажатия */
-        font-size: 13px !important; /* Сделали шрифт крупнее и логичнее */
-        font-weight: 700 !important; /* Сделали буквы четче */
-        text-transform: uppercase !important; /* Эстетичный капс */
-        letter-spacing: 0.5px !important;
+        padding: 4px 0 !important;
+        font-size: 12px !important; /* Крупный, читаемый шрифт */
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+    }
+
+    /* 3. КОРЗИНА: Встает в один ряд с кнопками меню, в самый конец */
+    .cart-icon {
+        font-size: 14px !important;
+        margin-left: 12px !important; /* Отступ от последней ссылки до корзины */
+        display: inline-block !important;
+        align-self: center !important;
+    }
+    .cart-count {
+        top: -6px !important;
+        right: -6px !important;
+        padding: 1px 4px !important;
+        font-size: 8px !important;
     }
 }
-
-
-
