@@ -202,9 +202,9 @@ function handleFormSubmit(event) {
     success.style.display = 'block';
   }
 }
-// Настройка медленного автоматического слайдера отзывов
+// Компактный и точный слайдер отзывов
 let currentReviewsSlide = 0;
-const totalReviewsSlides = 3; // Всего 3 слайда (в каждом по 2 отзыва, итого 6)
+const totalReviewsSlides = 3; 
 
 function autoScrollReviews() {
   const track = document.getElementById('reviewsTrack');
@@ -212,18 +212,17 @@ function autoScrollReviews() {
 
   currentReviewsSlide++;
   
-  // Если показали все 3 слайда, возвращаемся в начало
+  // Возврат к началу, если вышли за пределы 3 слайдов
   if (currentReviewsSlide >= totalReviewsSlides) {
     currentReviewsSlide = 0;
   }
 
-  // Сдвигаем ленту строго на ширину слайда (0%, 100% или 200%)
-  track.style.transform = `translateX(-${currentReviewsSlide * 100}%)`;
+  // Сдвигаем ровно на 0%, -33.333% или -66.666% от общей ширины всей ленты в 300%
+  const percentageShift = (currentReviewsSlide * 100) / totalReviewsSlides;
+  track.style.transform = `translateX(-${percentageShift}%)`;
 }
 
-// Отзывы будут переключаться медленно, раз в 7 секунд
+// Плавная смена раз в 7 секунд
 setInterval(autoScrollReviews, 7000);
-
-
 
 
