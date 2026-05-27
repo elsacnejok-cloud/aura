@@ -197,4 +197,12 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
         font-size: 11px !important; /* Делаем шрифт ссылок чуть компактнее */
     }
 }
+/* Настройка слайдера отзывов для мобилок */
+@media (max-width: 768px) {
+    .reviews-slide {
+        grid-template-columns: 1fr !important; /* На телефонах отзывы встанут один под другой */
+        gap: 15px !important;
+    }
+}
+
 
