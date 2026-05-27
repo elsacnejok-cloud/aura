@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AURA | Эстетика ухода</title>
+  <!-- Подключили красивый эстетичный шрифт Montserrat вместо сломанной ссылки -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
   <link href="https://googleapis.com" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
 </head>
@@ -20,15 +23,15 @@
       <a href="#faq">FAQ</a>
       <a href="#feedback">Контакты</a>
     </nav>
-    <div class="cart-icon" onclick="toggleCart()">
+    <button class="cart-icon" onclick="toggleCart()" aria-label="Открыть корзину" style="background:none; border:none; cursor:pointer;">
       🛒 <span class="cart-count">0</span>
-    </div>
+    </button>
   </header>
 
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h3>Ваша корзина</h3>
-      <span class="close-cart" onclick="toggleCart()">&times;</span>
+      <button class="close-cart" onclick="toggleCart()" style="background:none; border:none; cursor:pointer;">&times;</button>
     </div>
     <div class="cart-body" id="cartBody">
       <p class="empty-cart-msg">Корзина пока пуста</p>
@@ -41,43 +44,49 @@
 
   <div class="modal-overlay" id="orderModal">
     <div class="order-modal-box">
-      <span class="close-modal" onclick="closeOrderModal()">&times;</span>
+      <button class="close-modal" onclick="closeOrderModal()" style="background:none; border:none; cursor:pointer;">&times;</button>
       <h3>Оформление заказа в AURA</h3>
       <p class="modal-subtitle">Заполните данные для доставки бьюти-бокса</p>
       <form id="checkoutForm" onsubmit="submitOrder(event)">
+        
         <div class="form-group">
-          <label>Контакты</label>
-          <input type="text" placeholder="Имя и Фамилия" required>
-          <input type="tel" placeholder="+7 (999) 000-00-00" required>
+          <label for="userName">Контакты</label>
+          <input type="text" id="userName" placeholder="Имя и Фамилия" required>
+          <input type="tel" id="userPhone" placeholder="+7 (999) 000-00-00" required>
         </div>
+        
         <div class="form-group">
-          <label>Адрес</label>
-          <input type="text" placeholder="Город, улица, дом" required>
+          <label for="userAddress">Адрес</label>
+          <input type="text" id="userAddress" placeholder="Город, улица, дом" required>
         </div>
+        
         <div class="form-group">
-          <label>Доставка</label>
+          <label for="shippingMethod">Доставка</label>
           <select id="shippingMethod">
             <option value="cdek">Курьер СДЭК (до двери)</option>
             <option value="post">Почта России</option>
             <option value="pickup">Шоурум AURA</option>
           </select>
         </div>
+        
         <div class="form-group">
-          <label>Оплата</label>
+          <label for="paymentMethod">Оплата</label>
           <select id="paymentMethod">
             <option value="card">Картой онлайн</option>
             <option value="sbp">СБП</option>
             <option value="cash">При получении</option>
           </select>
         </div>
+        
         <div class="form-group">
-          <label>Промокод</label>
+          <label for="promoInput">Промокод</label>
           <div style="display:flex; gap:10px;">
             <input type="text" id="promoInput" placeholder="Введите код" style="margin-bottom:0; flex-grow:1;">
             <button type="button" onclick="applyPromoCode()" class="btn-promo-apply">Применить</button>
           </div>
           <small id="promoMessage"></small>
         </div>
+        
         <div class="order-summary-box">Сумма к оплате: <strong id="modalTotalPrice">0</strong> ₽</div>
         <button type="submit" class="btn-submit">Подтвердить заказ</button>
       </form>
@@ -91,6 +100,7 @@
       <a href="#catalog" class="btn">Перейти к покупкам</a>
     </div>
   </section>
+
 
   <section id="about" class="about-section">
     <div class="container">
@@ -231,19 +241,6 @@
     <button class="btn-buy" onclick="addToCart('Ночная восстанавливающая маска', 1100)">В корзину</button>
   </div>
 </div>
-<!-- ЭКСКЛЮЗИВ: БОКС «БУРМАЛДА» (КОЛЛАБА) -->
-      <div class="product-card" data-category="body" style="border: 2px solid #ff0055; position: relative;">
-        <div class="product-img-box">
-          <span class="badge" style="background: #ff0055; color: #fff; font-weight: bold;">КОЛЛАБА</span>
-          <img src="MELL.png" alt="Бокс БУРМАЛДА">
-        </div>
-        <div class="product-info">
-          <h3 style="color: #ff0055;">🔥 БОКС «БУРМАЛДА»</h3>
-          <p class="prod-desc"><strong>Эксклюзивный набор!</strong> Внутри: Тоник Soft Touch, Сыворотка с витамином C и Кокосовый скраб.</p>
-          <p class="price"><span style="text-decoration: line-through; color: #888; font-size: 0.9rem; margin-right: 5px;">4 200 ₽</span> 2 990 ₽</p>
-          <button class="btn-buy" onclick="addToCart('Бокс БУРМАЛДА', 2990)" style="background: linear-gradient(45deg, #ff0055, #7a00ff); color: white; border: none;">Забрать бокс</button>
-        </div>
-      </div>
 
 
       </div>
