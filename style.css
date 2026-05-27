@@ -192,9 +192,18 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
         padding: 10px 15px !important;
     }
 
-.nav-top-row {
-    display: contents !important;
+    /* Включаем контейнер ТОЛЬКО на мобилках */
+    .nav-top-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-bottom: 12px !important;
+    }
+    
+    /* Остальные твои мобильные стили пониже... */
 }
+
 
     /* Сделали логотип еще меньше и сдвинули максимально налево */
     .logo {
