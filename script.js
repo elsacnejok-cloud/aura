@@ -202,27 +202,39 @@ function handleFormSubmit(event) {
     success.style.display = 'block';
   }
 }
-// Компактный и точный слайдер отзывов
-let currentReviewsSlide = 0;
-const totalReviewsSlides = 3; 
+// ПЛАВНОЕ РАСТВОРЕНИЕ И ПОЯВЛЕНИЕ ОТЗЫВОВ
+let auraCurrentStep = 1; // Начинаем с первой пары
+const auraTotalSteps = 3; // Всего 3 пары отзывов
 
-function autoScrollReviews() {
-  const track = document.getElementById('reviewsTrack');
-  if (!track) return;
-
-  currentReviewsSlide++;
+function rotateAuraReviews() {
+  const currentPair = document.querySelectorAll(`.aura-slide-${auraCurrentStep}`);
   
-  // Возврат к началу, если вышли за пределы 3 слайдов
-  if (currentReviewsSlide >= totalReviewsSlides) {
-    currentReviewsSlide = 0;
-  }
+  // 1. Плавно гасим текущую пару (делаем прозрачной за 0.8 секунды)
+  currentPair.forEach(card => card.style.opacity = '0');
 
-  // Сдвигаем ровно на 0%, -33.333% или -66.666% от общей ширины всей ленты в 300%
-  const percentageShift = (currentReviewsSlide * 100) / totalReviewsSlides;
-  track.style.transform = `translateX(-${percentageShift}%)`;
+  setTimeout(() => {
+    // После того как они полностью погасли, убираем их из верстки
+    currentPair.forEach(card => card.style.display = 'none');
+
+    // Вычисляем номер следующей пары
+    auraCurrentStep = (auraCurrentStep >= auraTotalSteps) ? 1 : auraCurrentStep + 1;
+    
+    const nextPair = document.querySelectorAll(`.aura-slide-${auraCurrentStep}`);
+
+    // 2. Включаем отображение новой пары в сетку (но они пока прозрачные)
+    nextPair.forEach(card => card.style.display = 'block');
+
+    // 3. С микрозадержкой нежно их проявляем
+    setTimeout(() => {
+      nextPair.forEach(card => card.style.opacity = '1');
+    }, 50);
+
+  }, 800); // 800 миллисекунд — время совпадает с transition в HTML
 }
 
-// Плавная смена раз в 7 секунд
+// Менять отзывы будем каждые 6 секунд
+setInterval(rotateAuraReviews, 6000);
+
 setInterval(autoScrollReviews, 7000);
 
 
