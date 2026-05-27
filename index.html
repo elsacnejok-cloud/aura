@@ -23,15 +23,15 @@
       <a href="#faq">FAQ</a>
       <a href="#feedback">Контакты</a>
     </nav>
-    <button class="cart-icon" onclick="toggleCart()" aria-label="Открыть корзину">
-      🛒 <span class="cart-count">0</span>
-    </button>
-  </header>
+   <button class="cart-icon" onclick="toggleCart()" aria-label="Открыть корзину" style="background:none; border:none; cursor:pointer; outline:none;">
+  🛒 <span class="cart-count">0</span>
+</button>
+</header>
 
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h3>Ваша корзина</h3>
-      <button class="close-btn close-cart" onclick="toggleCart()">&times;</button>
+    <button class="close-modal" onclick="closeOrderModal()" style="background:none; border:none; cursor:pointer; outline:none; position:absolute; top:20px; right:20px; font-size:28px; color:#999;">&times;</button>
     </div>
     <div class="cart-body" id="cartBody">
       <p class="empty-cart-msg">Корзина пока пуста</p>
