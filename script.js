@@ -202,27 +202,27 @@ function handleFormSubmit(event) {
     success.style.display = 'block';
   }
 }
-// НАСТРОЙКА АВТОМАТИЧЕСКОГО СЛАЙДЕРА ОТЗЫВОВ
-let currentSlide = 0;
-const totalSlides = 3; // У нас всего 3 пары отзывов (3 слайда)
+// Настройка медленного автоматического слайдера отзывов
+let currentReviewsSlide = 0;
+const totalReviewsSlides = 3; // Всего 3 слайда (в каждом по 2 отзыва, итого 6)
 
-function nextSlide() {
+function autoScrollReviews() {
   const track = document.getElementById('reviewsTrack');
   if (!track) return;
 
-  currentSlide++;
+  currentReviewsSlide++;
   
-  // Если дошли до конца, возвращаемся на самый первый слайд
-  if (currentSlide >= totalSlides) {
-    currentSlide = 0;
+  // Если показали все 3 слайда, возвращаемся в начало
+  if (currentReviewsSlide >= totalReviewsSlides) {
+    currentReviewsSlide = 0;
   }
 
-  // Сдвигаем дорожку влево на 100% ширины слайда
-  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  // Сдвигаем ленту строго на ширину слайда (0%, 100% или 200%)
+  track.style.transform = `translateX(-${currentReviewsSlide * 100}%)`;
 }
 
-// Запускаем бесконечный круговорот: смена отзывов каждые 5 секунд (5000 миллисекунд)
-setInterval(nextSlide, 5000);
+// Отзывы будут переключаться медленно, раз в 7 секунд
+setInterval(autoScrollReviews, 7000);
 
 
 
