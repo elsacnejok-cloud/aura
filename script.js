@@ -202,6 +202,42 @@ function handleFormSubmit(event) {
     success.style.display = 'block';
   }
 }
+// ПЛАВНЫЙ КРУГОВОРОТ ОТЗЫВОВ (ПРОЯВЛЕНИЕ)
+let currentPairIndex = 0;
+
+function rotateReviews() {
+  const allCards = document.querySelectorAll('.slide-pair');
+  if (allCards.length === 0) return;
+
+  // 1. Скрываем текущую пару (делаем прозрачной)
+  allCards[currentPairIndex * 2].style.opacity = '0';
+  allCards[currentPairIndex * 2 + 1].style.opacity = '0';
+
+  setTimeout(() => {
+    // Полностью убираем их из видимости после исчезновения
+    allCards[currentPairIndex * 2].style.display = 'none';
+    allCards[currentPairIndex * 2 + 1].style.display = 'none';
+
+    // 2. Переключаемся на следующую пару
+    currentPairIndex = (currentPairIndex + 1) >= (allCards.length / 2) ? 0 : currentPairIndex + 1;
+
+    // 3. Включаем отображение новой пары
+    const isMobile = window.innerWidth <= 768;
+    // На мобилках ставим блок (в одну колонку), на ПК — оставляем твой стандартный стиль
+    allCards[currentPairIndex * 2].style.display = 'block'; 
+    allCards[currentPairIndex * 2 + 1].style.display = 'block';
+
+    // 4. Плавно проявляем их (эффект Fade-in)
+    setTimeout(() => {
+      allCards[currentPairIndex * 2].style.opacity = '1';
+      allCards[currentPairIndex * 2 + 1].style.opacity = '1';
+    }, 50);
+
+  }, 600); // Время совпадает с transition в HTML (0.6s)
+}
+
+// Запускаем смену отзывов каждые 5 секунд
+setInterval(rotateReviews, 5000);
 
 
 
