@@ -184,39 +184,52 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
         transform: scale(1) !important; /* Убираем увеличение, чтобы не ломать сетку */
     }
 }
-/* АККУРАТНАЯ МОБИЛЬНАЯ ШАПКА БЕЗ ИЗМЕНЕНИЯ HTML */
+/* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ВЕРСИЯ: МИНИ-ЛОГОТИП НАВЕРХУ, КРУПНОЕ МЕНЮ СНИЗУ */
 @media (max-width: 768px) {
     .navbar {
+        /* Включаем режим двух строк на телефонах */
+        flex-wrap: wrap !important;
         padding: 10px 15px !important;
-        justify-content: space-between !important;
+        gap: 12px 0 !important;
     }
 
-    /* Делаем логотип поменьше на телефонах */
+    /* 1. ЛОГОТИП: Делаем меньше, поднимаем наверх и прижимаем максимально налево */
     .logo {
-        font-size: 18px !important;
-        letter-spacing: 1px !important;
+        font-size: 16px !important; /* Еще меньше и аккуратнее */
+        letter-spacing: 1.5px !important;
+        order: 1 !important; /* Жестко ставим на 1-е место в верхний ряд */
+        flex: 1 !important;
+        text-align: left !important;
     }
 
-    /* Прячем длинное меню на мобилках в аккуратную прокрутку в одну строчку */
+    /* 2. КОРЗИНА: Ставим в верхний ряд направо */
+    .cart-icon {
+        font-size: 18px !important;
+        order: 2 !important; /* Жестко ставим на 2-е место в верхний ряд */
+        background: none !important;
+        border: none !important;
+    }
+
+    /* 3. НАВИГАЦИЯ: Спускаем на вторую строчку строго под логотип и корзину */
     .nav-links {
         display: flex !important;
-        gap: 10px !important;
-        overflow-x: auto !important;
-        white-space: nowrap !important;
-        margin: 0 10px !important;
-        padding-bottom: 3px !important;
+        order: 3 !important; /* Уходит на строчку ниже */
+        width: 100% !important; /* Занимает всю ширину под логотипом */
+        justify-content: space-between !important; /* Равномерно распределяем кнопки */
+        overflow-x: auto !important; /* Защита от вылетов на мелких экранах */
+        white-space: nowrap !important; /* Запрещаем перенос слов */
+        padding-top: 4px !important;
+        border-top: 1fr dashed #FFF0F5; /* Легкое незаметное разделение рядов */
     }
 
+    /* 4. КНОПКИ МЕНЮ: Делаем их заметно больше и удобнее для пальцев */
     .nav-links a {
         margin: 0 !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
-        text-transform: uppercase !important;
-    }
-
-    /* Корзина на мобилке */
-    .cart-icon {
-        font-size: 16px !important;
+        padding: 8px 4px !important; /* Увеличили зону нажатия */
+        font-size: 13px !important; /* Сделали шрифт крупнее и логичнее */
+        font-weight: 700 !important; /* Сделали буквы четче */
+        text-transform: uppercase !important; /* Эстетичный капс */
+        letter-spacing: 0.5px !important;
     }
 }
 
