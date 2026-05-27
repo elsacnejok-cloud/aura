@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AURA | Эстетика ухода</title>
-  <!-- Подключили красивый эстетичный шрифт Montserrat вместо сломанной ссылки -->
+  <!-- Исправленное подключение эстетичного шрифта Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
   <link href="https://googleapis.com" rel="stylesheet">
@@ -23,7 +23,7 @@
       <a href="#faq">FAQ</a>
       <a href="#feedback">Контакты</a>
     </nav>
-    <button class="cart-icon" onclick="toggleCart()" aria-label="Открыть корзину" style="background:none; border:none; cursor:pointer;">
+    <button class="cart-icon" onclick="toggleCart()" aria-label="Открыть корзину">
       🛒 <span class="cart-count">0</span>
     </button>
   </header>
@@ -31,7 +31,7 @@
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h3>Ваша корзина</h3>
-      <button class="close-cart" onclick="toggleCart()" style="background:none; border:none; cursor:pointer;">&times;</button>
+      <button class="close-btn close-cart" onclick="toggleCart()">&times;</button>
     </div>
     <div class="cart-body" id="cartBody">
       <p class="empty-cart-msg">Корзина пока пуста</p>
@@ -44,7 +44,7 @@
 
   <div class="modal-overlay" id="orderModal">
     <div class="order-modal-box">
-      <button class="close-modal" onclick="closeOrderModal()" style="background:none; border:none; cursor:pointer;">&times;</button>
+      <button class="close-btn close-modal" onclick="closeOrderModal()">&times;</button>
       <h3>Оформление заказа в AURA</h3>
       <p class="modal-subtitle">Заполните данные для доставки бьюти-бокса</p>
       <form id="checkoutForm" onsubmit="submitOrder(event)">
@@ -80,8 +80,8 @@
         
         <div class="form-group">
           <label for="promoInput">Промокод</label>
-          <div style="display:flex; gap:10px;">
-            <input type="text" id="promoInput" placeholder="Введите код" style="margin-bottom:0; flex-grow:1;">
+          <div class="promo-wrapper">
+            <input type="text" id="promoInput" placeholder="Введите код">
             <button type="button" onclick="applyPromoCode()" class="btn-promo-apply">Применить</button>
           </div>
           <small id="promoMessage"></small>
@@ -94,13 +94,12 @@
   </div>
 
   <section class="hero">
-    <div class="hero-content">
+    <div class="container hero-content">
       <h1>Чистая эстетика твоей кожи</h1>
       <p>Органическая косметика AURA. Создана, чтобы подчеркнуть твою естественную нежность и заботу в каждом прикосновении.</p>
       <a href="#catalog" class="btn">Перейти к покупкам</a>
     </div>
   </section>
-
 
   <section id="about" class="about-section">
     <div class="container">
@@ -109,7 +108,7 @@
           <h2>Философия AURA</h2>
           <p>Наша косметика создается из натуральных растительных экстрактов высшего качества, сохраняя природную силу ингредиентов.</p>
           <ul>
-            <li>✨ <strong>100% органические компоненты</strong> — без парабенов и сульфатов.</li>
+            <li>✨ <strong>100% organic components</strong> — без парабенов и сульфатов.</li>
             <li>🐰 <strong>Cruelty Free</strong> — мы любим планету и не тестируем продукты на животных.</li>
             <li>🌸 <strong>Эко-френдли упаковка</strong> — флаконы подлежат вторичной переработке.</li>
           </ul>
@@ -121,133 +120,133 @@
     </div>
   </section>
 
-  <section id="catalog" class="catalog-section">
-    <div class="container">
-      <h2 class="section-title">Коллекция AURA</h2>
-      <div class="filter-buttons">
-        <button class="filter-btn active" onclick="filterCategory('all', this)">Все продукты</button>
-        <button class="filter-btn" onclick="filterCategory('face', this)">Уход за лицом</button>
-        <button class="filter-btn" onclick="filterCategory('body', this)">Уход за телом</button>
-      </div>
-      <div class="products-grid">
-        
-        <div class="product-card" data-category="face">
-  <div class="product-img-box">
-    <span class="badge">Топ</span>
-   <img src="rose.jpg" alt="Пенка с экстрактом розы">
-  </div>
-  <div class="product-info">
-    <h3>Пенка с экстрактом розы</h3>
-    <p class="prod-desc">Мягко очищает кожу, сохраняя естественный гидролипидный баланс.</p>
-    <p class="price">1 200 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Пенка с экстрактом розы', 1200)">В корзину</button>
-  </div>
-</div>
 
-
-
-        <div class="product-card" data-category="face">
-  <div class="product-img-box">
-    <!-- Указываем точное имя файла, который загрузили на GitHub -->
-    <img src="tonik.jpg.png" alt="Тоник Soft Touch">
-  </div>
-  <div class="product-info">
-    <h3>Тоник Soft Touch</h3>
-    <p class="prod-desc">Мгновенно насыщает клетки влагой и выравнивает тон лица.</p>
-    <p class="price">950 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Тоник Soft Touch', 950)">В корзину</button>
-  </div>
-</div>
-
-
-        <div class="product-card" data-category="face">
-  <div class="product-img-box">
-    <span class="badge">New</span>
-    <!-- Прописываем точное имя файла, сохраненного на GitHub -->
-    <img src="vitamin-c.jpg.png" alt="Сыворотка с витамином C">
-  </div>
-  <div class="product-info">
-    <h3>Сыворотка с витамином C</h3>
-    <p class="prod-desc">Мощный антиоксидантный заряд для возвращения природного сияния.</p>
-    <p class="price">1 850 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Сыворотка с витамином C', 1850)">В корзину</button>
-  </div>
-</div>
-
-
-       <div class="product-card" data-category="body">
-  <div class="product-img-box">
-    <span class="badge">Топ</span>
-    <!-- Прописываем точное название картинки скраба -->
-    <img src="coconut-scrub.jpg" alt="Кокосовый скраб для тела">
-  </div>
-  <div class="product-info">
-    <h3>Кокосовый скраб для тела</h3>
-    <p class="prod-desc">Бережно отшелушивает и делает кожу шелковистой и мягкой.</p>
-    <p class="price">1 400 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Кокосовый скраб для тела', 1400)">В корзину</button>
-  </div>
-</div>
-        <!-- ТОВАР 5: Крем для лица -->
-<div class="product-card" data-category="face">
-  <div class="product-img-box">
-    <span class="badge">Хит</span>
-    <img src="https://unsplash.com" alt="Увлажняющий крем">
-  </div>
-  <div class="product-info">
-    <h3>Увлажняющий крем-флюид</h3>
-    <p class="prod-desc">Легкая текстура глубоко питает кожу и дарит ощущение свежести на весь день.</p>
-    <p class="price">1 150 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Увлажняющий крем-флюид', 1150)">В корзину</button>
-  </div>
-</div>
-
-<!-- ТОВАР 6: Гидрофильное масло -->
-<div class="product-card" data-category="face">
-  <div class="product-img-box">
-    <img src="https://unsplash.com" alt="Гидрофильное масло">
-  </div>
-  <div class="product-info">
-    <h3>Гидрофильное масло Aura</h3>
-    <p class="prod-desc">Идеально растворяет даже самый стойкий макияж и бережно очищает поры.</p>
-    <p class="price">1 350 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Гидрофильное масло Aura', 1350)">В корзину</button>
-  </div>
-</div>
-
-<!-- ТОВАР 7: Лосьон для тела -->
-<div class="product-card" data-category="body">
-  <div class="product-img-box">
-    <span class="badge">New</span>
-    <img src="https://unsplash.com" alt="Лосьон для тела">
-  </div>
-  <div class="product-info">
-    <h3>Парфюмированный лосьон</h3>
-    <p class="prod-desc">Тающая текстура с ароматом ванили интенсивно смягчает кожу тела.</p>
-    <p class="price">1 600 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Парфюмированный лосьон', 1600)">В корзину</button>
-  </div>
-</div>
-
-<!-- ТОВАР 8: Маска для лица -->
-<div class="product-card" data-category="face">
-  <div class="product-img-box">
-    <img src="https://unsplash.com" alt="Ночная маска">
-  </div>
-  <div class="product-info">
-    <h3>Ночная восстанавливающая маска</h3>
-    <p class="prod-desc">Стирает следы усталости, пока вы спите, возвращая коже отдохнувший вид.</p>
-    <p class="price">1 100 ₽</p>
-    <button class="btn-buy" onclick="addToCart('Ночная восстанавливающая маска', 1100)">В корзину</button>
-  </div>
-</div>
-
-
-      </div>
+<section id="catalog" class="catalog-section">
+  <div class="container">
+    <h2 class="section-title">Коллекция AURA</h2>
+    
+    <div class="filter-buttons">
+      <button class="filter-btn active" onclick="filterCategory('all', this)">Все продукты</button>
+      <button class="filter-btn" onclick="filterCategory('face', this)">Уход за лицом</button>
+      <button class="filter-btn" onclick="filterCategory('body', this)">Уход за телом</button>
     </div>
-  </section>
+    
+    <div class="products-grid">
+      
+      <!-- ТОВАР 1: Пенка -->
+      <div class="product-card" data-category="face">
+        <div class="product-img-box">
+          <span class="badge">Топ</span>
+          <img src="rose.jpg" alt="Пенка с экстрактом розы">
+        </div>
+        <div class="product-info">
+          <h3>Пенка с экстрактом розы</h3>
+          <p class="prod-desc">Мягко очищает кожу, сохраняя естественный гидролипидный баланс.</p>
+          <p class="price">1 200 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Пенка с экстрактом розы', 1200)">В корзину</button>
+        </div>
+      </div>
 
-  <section id="reviews" class="reviews-section">
+      <!-- ТОВАР 2: Тоник -->
+      <div class="product-card" data-category="face">
+        <div class="product-img-box">
+          <img src="tonik.jpg.png" alt="Тоник Soft Touch">
+        </div>
+        <div class="product-info">
+          <h3>Тоник Soft Touch</h3>
+          <p class="prod-desc">Мгновенно насыщает клетки влагой и выравнивает тон лица.</p>
+          <p class="price">950 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Тоник Soft Touch', 950)">В корзину</button>
+        </div>
+      </div>
+
+      <!-- ТОВАР 3: Сыворотка -->
+      <div class="product-card" data-category="face">
+        <div class="product-img-box">
+          <span class="badge">New</span>
+          <img src="vitamin-c.jpg.png" alt="Сыворотка с витамином C">
+        </div>
+        <div class="product-info">
+          <h3>Сыворотка с витамином C</h3>
+          <p class="prod-desc">Мощный антиоксидантный заряд для возвращения природного сияния.</p>
+          <p class="price">1 850 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Сыворотка с витамином C', 1850)">В корзину</button>
+        </div>
+      </div>
+
+      <!-- ТОВАР 4: Скраб -->
+      <div class="product-card" data-category="body">
+        <div class="product-img-box">
+          <span class="badge">Топ</span>
+          <img src="coconut-scrub.jpg" alt="Кокосовый скраб для тела">
+        </div>
+        <div class="product-info">
+          <h3>Кокосовый скраб для тела</h3>
+          <p class="prod-desc">Бережно отшелушивает и делает кожу шелковистой и мягкой.</p>
+          <p class="price">1 400 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Кокосовый скраб для тела', 1400)">В корзину</button>
+        </div>
+      </div>
+
+      <!-- ТОВАР 5: Крем для лица -->
+      <div class="product-card" data-category="face">
+        <div class="product-img-box">
+          <span class="badge">Хит</span>
+          <img src="https://unsplash.com" alt="Увлажняющий крем">
+        </div>
+        <div class="product-info">
+          <h3>Увлажняющий крем-флюид</h3>
+          <p class="prod-desc">Легкая текстура глубоко питает кожу и дарит ощущение свежести на весь день.</p>
+          <p class="price">1 150 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Увлажняющий крем-флюид', 1150)">В корзину</button>
+        </div>
+      </div>
+
+      <!-- ТОВАР 6: Гидрофильное масло -->
+      <div class="product-card" data-category="face">
+        <div class="product-img-box">
+          <img src="https://unsplash.com" alt="Гидрофильное масло">
+        </div>
+        <div class="product-info">
+          <h3>Гидрофильное масло Aura</h3>
+          <p class="prod-desc">Идеально растворяет даже самый стойкий макияж и бережно очищает поры.</p>
+          <p class="price">1 350 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Гидрофильное масло Aura', 1350)">В корзину</button>
+        </div>
+      </div>
+
+      <!-- ТОВАР 7: Лосьон для тела -->
+      <div class="product-card" data-category="body">
+        <div class="product-img-box">
+          <span class="badge">New</span>
+          <img src="https://unsplash.com" alt="Лосьон для тела">
+        </div>
+        <div class="product-info">
+          <h3>Парфюмированный лосьон</h3>
+          <p class="prod-desc">Тающая текстура с ароматом ванили интенсивно смягчает кожу тела.</p>
+          <p class="price">1 600 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Парфюмированный лосьон', 1600)">В корзину</button>
+        </div>
+      </div>
+
+      <!-- ТОВАР 8: Маска для лица -->
+      <div class="product-card" data-category="face">
+        <div class="product-img-box">
+          <img src="https://unsplash.com" alt="Ночная маска">
+        </div>
+        <div class="product-info">
+          <h3>Ночная восстанавливающая маска</h3>
+          <p class="prod-desc">Стирает следы усталости, пока вы спите, возвращая коже отдохнувший вид.</p>
+          <p class="price">1 100 ₽</p>
+          <button class="btn-buy" onclick="addToCart('Ночная восстанавливающая маска', 1100)">В корзину</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+     <section id="reviews" class="reviews-section">
     <div class="container">
       <h2 class="section-title">Отзывы об AURA</h2>
       <div class="reviews-grid">
@@ -281,9 +280,15 @@
     <div class="container small-container">
       <h2>Остались вопросы?</h2>
       <form id="contactForm" onsubmit="handleFormSubmit(event)">
-        <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
-        <div class="form-group"><input type="email" placeholder="Ваш Email" required></div>
-        <div class="form-group"><textarea rows="4" placeholder="Ваш вопрос" required></textarea></div>
+        <div class="form-group">
+          <input type="text" name="username" placeholder="Ваше имя" required>
+        </div>
+        <div class="form-group">
+          <input type="email" name="useremail" placeholder="Ваш Email" required>
+        </div>
+        <div class="form-group">
+          <textarea name="usermessage" rows="4" placeholder="Ваш вопрос" required></textarea>
+        </div>
         <button type="submit" class="btn-submit">Отправить сообщение</button>
       </form>
       <div id="formSuccess" class="success-message">Спасибо! Мы скоро свяжемся с вами. 💕</div>
@@ -303,4 +308,5 @@
   <script src="./script.js"></script>
 </body>
 </html>
+
 
