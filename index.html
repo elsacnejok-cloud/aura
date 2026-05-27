@@ -14,16 +14,8 @@
 
   
 
-   <header class="navbar">
-    <!-- Верхний ряд: Логотип слева, корзина справа -->
-    <div class="nav-top-row">
-      <div class="logo">AURA</div>
-      <button class="cart-icon" onclick="toggleCart()" aria-label="Открыть корзину" style="background:none; border:none; cursor:pointer; outline:none;">
-        🛒 <span class="cart-count">0</span>
-      </button>
-    </div>
-    
-    <!-- Нижний ряд: Все ссылки строго в одну линию -->
+    <header class="navbar">
+    <div class="logo">AURA</div>
     <nav class="nav-links">
       <a href="#about">О бренде</a>
       <a href="#catalog">Каталог</a>
@@ -31,7 +23,11 @@
       <a href="#faq">FAQ</a>
       <a href="#feedback">Контакты</a>
     </nav>
+    <button class="cart-icon" onclick="toggleCart()" aria-label="Открыть корзину" style="background:none; border:none; cursor:pointer; outline:none;">
+      🛒 <span class="cart-count">0</span>
+    </button>
   </header>
+
 
 
   <div class="cart-sidebar" id="cartSidebar">
