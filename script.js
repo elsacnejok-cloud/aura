@@ -38,6 +38,20 @@ function addToCart(name, price) {
 function removeFromCart(index) {
   cart.splice(index, 1);
   updateCart();
+  
+  // Если модальное окно открыто в момент удаления, обновляем цену и там
+  const modal = document.getElementById('orderModal');
+  if (modal && modal.classList.contains('active')) {
+    const modalTotal = document.getElementById('modalTotalPrice');
+    if (modalTotal) modalTotal.innerText = total.toLocaleString();
+    
+    // Сбрасываем промокод, так как сумма изменилась
+    discountApplied = false;
+    const pMsg = document.getElementById('promoMessage');
+    const pInput = document.getElementById('promoInput');
+    if (pMsg) pMsg.innerText = '';
+    if (pInput) pInput.value = '';
+  }
 }
 
 function updateCart() {
@@ -51,6 +65,8 @@ function updateCart() {
   if (cart.length === 0) {
     cartBody.innerHTML = '<p class="empty-cart-msg">Корзина пока пуста</p>';
     total = 0;
+    // Если корзина опустела, закрываем модалку оформления заказа
+    closeOrderModal();
   } else {
     cartBody.innerHTML = '';
     total = 0;
@@ -73,7 +89,10 @@ function updateCart() {
 
 function openOrderModal() {
   if (cart.length === 0) return alert('Ваша корзина пуста!');
-  toggleCart();
+  
+  // Закрываем шторку корзины перед открытием модалки
+  const sidebar = document.getElementById('cartSidebar');
+  if (sidebar) sidebar.classList.remove('active');
   
   discountApplied = false;
   const pInput = document.getElementById('promoInput');
@@ -108,7 +127,6 @@ function applyPromoCode() {
     modalTotal.innerText = Math.round(newTotal).toLocaleString();
     discountApplied = true;
     
-    // Специальное кастомное сообщение для промокода Мелстроя
     if (code === 'MELLSTROY') {
       pMsg.style.color = '#77dd77';
       pMsg.innerText = '🔥 Коллаба с Мелстроем! Скидка 20% успешно применилась!';
@@ -132,7 +150,6 @@ function submitOrder(event) {
   const modalTotal = document.getElementById('modalTotalPrice');
   const finalPrice = modalTotal ? modalTotal.innerText : total.toLocaleString();
   
-  // Проверяем, есть ли в корзине бокс Бурмалда
   const hasBurmalda = cart.some(item => item.name === 'Бокс БУРМАЛДА');
   
   if (hasBurmalda) {
@@ -165,6 +182,7 @@ function toggleFaq(element) {
   const answer = element.querySelector('.faq-answer');
   const span = element.querySelector('.faq-question span');
   if (!answer || !span) return;
+  
   if (answer.style.display === 'block') {
     answer.style.display = 'none';
     span.innerText = '+';
@@ -179,9 +197,11 @@ function handleFormSubmit(event) {
   const form = document.getElementById('contactForm');
   const success = document.getElementById('formSuccess');
   if (form && success) {
+    form.reset(); // Сбрасываем введенные данные из полей
     form.style.display = 'none';
     success.style.display = 'block';
   }
 }
+
 
 
