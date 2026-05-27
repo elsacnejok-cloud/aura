@@ -184,52 +184,54 @@ h1,h2,h3,.logo{font-family:'Playfair Display',serif}
         transform: scale(1) !important; /* Убираем увеличение, чтобы не ломать сетку */
     }
 }
-/* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ШАПКА (ЭКРАНЫ МЕНЕЕ 768px) */
+/* ИДЕАЛЬНАЯ МОБИЛЬНАЯ ШАПКА С МИНИ-ЛОГОТИПОМ СЛЕВА */
 @media (max-width: 768px) {
     .navbar {
-        /* Переключаем шапку в режим колонки: верхний ряд + нижний ряд */
         flex-direction: column !important;
         align-items: stretch !important;
-        padding: 12px 15px !important;
+        padding: 10px 15px !important;
     }
 
-    /* Настройка верхнего ряда (Логотип + Корзина) */
+    /* Верхний ряд: Логотип и Корзина */
     .nav-top-row {
         display: flex !important;
         justify-content: space-between !important;
         align-items: center !important;
         width: 100% !important;
-        margin-bottom: 10px !important; /* Отступ до кнопок меню */
+        margin-bottom: 12px !important;
     }
 
+    /* Сделали логотип еще меньше и сдвинули максимально налево */
     .logo {
-        font-size: 22px !important; /* Аккуратный логотип наверху слева */
-        letter-spacing: 2px !important;
+        font-size: 18px !important; 
+        letter-spacing: 1.5px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
     }
 
     .cart-icon {
-        font-size: 18px !important; /* Корзина наверху справа */
+        font-size: 18px !important;
+        margin: 0 !important;
     }
 
-    /* Настройка нижнего ряда (Меню в одну строчку) */
+    /* Нижний ряд: Ссылки строго в одну линию */
     .nav-links {
         display: flex !important;
-        justify-content: space-between !important; /* Равномерно растягиваем по ширине */
+        justify-content: space-between !important; 
         width: 100% !important;
-        overflow-x: auto !important; /* Если экран совсем крошечный, появится аккуратная микро-прокрутка */
-        white-space: nowrap !important; /* Запрещаем перенос слов на новую строку */
-        padding-bottom: 2px !important;
+        overflow-x: auto !important; 
+        white-space: nowrap !important; 
     }
 
     .nav-links a {
-        margin: 0 !important; /* Убираем старые отступы */
-        padding: 6px 4px !important; /* Делаем саму зону клика больше, чтобы удобно нажимать */
-        font-size: 12px !important; /* Шрифт покрупнее и читаемее */
+        margin: 0 !important; 
+        padding: 6px 3px !important; 
+        font-size: 11px !important; /* Компактный размер для идеальной строчки */
         font-weight: 600 !important;
-        text-transform: uppercase !important; /* Делает кнопки более стильными */
+        text-transform: uppercase !important; 
         letter-spacing: 0.5px !important;
     }
 }
-
 
 
