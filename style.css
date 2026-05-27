@@ -30,7 +30,7 @@ body {
 h1,h2,h3,.logo{font-family:'Playfair Display',serif}
 
 .sale-banner{background:#FFF0F5;color:#F7A8D2;text-align:center;padding:8px;font-size:12px;font-weight:500;letter-spacing:1px;width:100%;position:fixed;top:0;left:0;z-index:1001}
-.navbar{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:rgba(255,255,255,0.95);position:fixed;top:34px;left:0;width:100%;z-index:999;border-bottom:1px solid #FFF0F5}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;background:rgba(255,255,255,0.95);position:fixed;top:0;left:0;width:100%;z-index:999;border-bottom:1px solid #FFF0F5}
 .logo{font-size:28px;font-weight:600;letter-spacing:2px}
 .nav-links a{text-decoration:none;color:#555;margin:0 15px;font-size:14px;transition:0.3s}
 .nav-links a:hover{color:#F7A8D2}
